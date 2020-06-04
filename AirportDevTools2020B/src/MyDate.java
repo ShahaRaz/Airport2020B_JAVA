@@ -4,32 +4,34 @@ import java.time.Period;
 import java.util.Scanner;
 
 public class MyDate {
-	public static enum monthName  {Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec};
+	public static enum monthName {
+		Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec
+	};
+
 	final static int CURRENT_YEAR = 2020;
 	// MyDate date=new MyDate(19, 6, 2015);
 	private int day;
 	private int month;
 	private int year;
 	private final static int[] DAYS_MONTHS = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-	
+
 	public MyDate(int day, int month, int year) {
 		setMonthNDay(month, day);
 		setYear(year);
 
 	}
- 
-	public MyDate() {
-		Scanner scn = new Scanner(System.in);
+
+
+	public MyDate(Scanner scn) {
 		int day, month, year;
 		System.out.println("insert day (numbers only) : ");
-		day = scn.nextInt();
+		day = Integer.parseInt(scn.nextLine());
 		System.out.println("insert month (numbers only) :");
-		month = scn.nextInt();
+		month = Integer.parseInt(scn.nextLine());
 		System.out.println("insert year (4 Digits) :");
-		year = scn.nextInt();
+		year = Integer.parseInt(scn.nextLine());
 		setMonthNDay(month, day);
 		setYear(year);
-		scn.close();
 	} // manually add day
 //
 //	public void save(PrintWriter pw) {
@@ -53,21 +55,18 @@ public class MyDate {
 
 	private void setMonthNDay(int month, int day) {
 		// TODO check if there is a better way to specify the correct day & month
-			this.month = month;
+		this.month = month;
 		if (month > 12 || month < 1) { // case is invalid is go to January
 			this.month = 1;
 			this.day = 31;
-		}
-		else if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
+		} else if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
 			this.day = 31; // max days in month
-		}
-		else if (month == 2) {
+		} else if (month == 2) {
 			this.day = 28;
-		}
-		else if (month == 4 || month == 6 || month == 9 || month == 11) {
+		} else if (month == 4 || month == 6 || month == 9 || month == 11) {
 			this.day = 30;
 		}
-	
+
 		setDay(day); // here we really set object's day.
 	}
 
@@ -85,28 +84,28 @@ public class MyDate {
 		int diff = Math.abs(period.getDays() + period.getMonths() * DAYS_MONTHS[month - 1] + period.getYears());
 		return diff;
 	}
-	
+
 	public int yearsCount(MyDate endDate) {
-		return (int)(daysCount(endDate))/365;
+		return (int) (daysCount(endDate)) / 365;
 		// not considering leap year and maybe other stuff
 	}
 
 	@Override
 	public String toString() {
-		return "[" + day + "." + month + "." + year + "]";
+		return  day + "/" + month + "/" + year;
 	}
 
 	public int getYear() {
 		return this.year;
 	}
+
 	public int getMonth() {
 		return this.month;
 	}
+
 	public String getMonthYearName() {
-		monthName monthStr = monthName.values()[(this.month-1)];
+		monthName monthStr = monthName.values()[(this.month - 1)];
 		return monthStr.toString() + this.year;
 	}
-
-	
 
 }

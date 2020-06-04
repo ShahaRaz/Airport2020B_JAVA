@@ -4,26 +4,44 @@ public class Flight {
 	public static DecimalFormat df = new DecimalFormat("#.##");
 	public static int Id = 1000;
 
-	private int flightId;
+	private MyDate date;
+	private int terminalNum;
+	private String flightId;
+	private String depAirPort;
 	private String arriveAirPort;
+	private String brand;
 	private String depTime; // by GMC +2 what ever
-	private String arrTime; //
 	private double price;
 
-	public Flight(String arriveAirPort, String depTime, String arrTime) {
-		this.flightId = Id++;
-		this.arriveAirPort = arriveAirPort;
-		this.depTime = depTime;
-		this.arrTime = arrTime;
-		double time = (timeStrToDouble(arrTime) - timeStrToDouble(depTime));
-		setPrice(Math.abs(time));
+	// Flight In // --> The Difference between 2 Constructors is the Arrival-AirPort
+	// against Dept. AirPort //
+
+	public Flight(String flightId, String depAirPort, MyDate date, String depTime, int terminalNum, String brand) {
+		setFlightId(flightId);
+		setDepAirPort(depAirPort);
+		setDepTime(depTime);
+		setDate(date);
+		setTerminalNum(terminalNum);
+		setBrand(brand);
+		this.arriveAirPort = "TLV Ben Gurion";
+	}
+
+	// Flights Out // --> The Difference between 2 Constructors is the
+	// Arrival-AirPort against Dept. AirPort //
+	public Flight(String flightId, MyDate date, String depTime, int terminalNum, String brand, String arriveAirPort) {
+		setFlightId(flightId);
+		setArriveAirPort(arriveAirPort);
+		setDepTime(depTime);
+		setDate(date);
+		setTerminalNum(terminalNum);
+		setBrand(brand);
+		this.depAirPort = "TLV Ben Gurion";
 	}
 
 	public Flight() {
-		flightId = 0;
+		flightId = "XX-XXXXXX";
 		arriveAirPort = "KOKOMAN";
 		depTime = "00:00";
-		arrTime = "00:00";
 		setPrice(0);
 	}
 
@@ -40,7 +58,27 @@ public class Flight {
 		return price;
 	}
 
-	public int getFlightId() {
+	public static int getId() {
+		return Id;
+	}
+
+	public MyDate getDate() {
+		return date;
+	}
+
+	public int getTerminalNum() {
+		return terminalNum;
+	}
+
+	public String getDepAirPort() {
+		return depAirPort;
+	}
+
+	public String getBrand() {
+		return brand;
+	}
+
+	public String getFlightId() {
 		return flightId;
 	}
 
@@ -52,11 +90,31 @@ public class Flight {
 		return depTime;
 	}
 
-	public String getArrTime() {
-		return arrTime;
+	// Setters //
+
+	public static void setId(int id) {
+		Id = id;
 	}
 
-	// Setters //
+	public void setDate(MyDate date) {
+		this.date = date;
+	}
+
+	public void setTerminalNum(int terminalNum) {
+		this.terminalNum = terminalNum;
+	}
+
+	public void setFlightId(String flightId) {
+		this.flightId = flightId;
+	}
+
+	public void setDepAirPort(String depAirPort) {
+		this.depAirPort = depAirPort;
+	}
+
+	public void setBrand(String brand) {
+		this.brand = brand;
+	}
 
 	public void setPrice(double time) {
 		if (time <= 0 || time >= 100)
@@ -73,18 +131,14 @@ public class Flight {
 		this.depTime = depTime;
 	}
 
-	public void setArrTime(String arrTime) {
-		this.arrTime = arrTime;
-	}
-
 	@Override
 	public String toString() {
 		double depTimeInt = timeStrToDouble(depTime);
-		double arrsTimeInt = timeStrToDouble(arrTime);
 
-		return "Flight Id:" + flightId + ", Arrival A.P: " + arriveAirPort + ", Dept. Time: " + depTime
-				+ ", Arrival Time: " + arrTime + ", Estimated Time: " + df.format(Math.abs(arrsTimeInt - depTimeInt))
+		return "Flight Id:" + flightId + ", Arrival A.P: " + arriveAirPort + ", Dept. Air.P: " + depAirPort
+				+ ", Dept. Time: " + depTime + ", Estimated Time: " + df.format(Math.abs(depTimeInt))
 				+ " Hours, Price: " + price + "$";
+
 	}
 
 	// know about all the flights
