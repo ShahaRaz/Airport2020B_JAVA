@@ -14,7 +14,7 @@ public class Program {
 	// private static Set<Flight> tsFlights = new TreeSet<>();
 	public static Scanner scn = new Scanner(System.in);
 	public static final String FILE_NAME = "Input.txt";
-//	public static final String FILE_NAMEout = "Output.txt"; //
+//	public static final String FILE_NAMEout = "Output.txt"; 
 
 	public static void main(String[] args) throws FileNotFoundException {
 		activition();
