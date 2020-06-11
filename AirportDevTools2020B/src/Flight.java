@@ -4,38 +4,44 @@ public class Flight {
 	public static DecimalFormat df = new DecimalFormat("#.##");
 	public static int Id = 1000;
 
+	private boolean flagInOut = true;
 	private MyDate date;
 	private int terminalNum;
 	private String flightId;
 	private String depAirPort;
 	private String arriveAirPort;
 	private String brand;
-	private String depTime; // by GMC +2 what ever
+	private String depTime;
+	private String arrTime;
 	private double price;
 
 	// Flight In // --> The Difference between 2 Constructors is the Arrival-AirPort
 	// against Dept. AirPort //
-
-	public Flight(String flightId, String depAirPort, MyDate date, String depTime, int terminalNum, String brand) {
+	public Flight(String flightId, String depAirPort, MyDate date, String depTime, String arrTime, int terminalNum,
+			String brand) {
 		setFlightId(flightId);
 		setDepAirPort(depAirPort);
+		setArriveAirPort("TLV Ben Gurion");
 		setDepTime(depTime);
+		setArrTime(arrTime);
 		setDate(date);
 		setTerminalNum(terminalNum);
 		setBrand(brand);
-		this.arriveAirPort = "TLV Ben Gurion";
 	}
 
 	// Flights Out // --> The Difference between 2 Constructors is the
 	// Arrival-AirPort against Dept. AirPort //
-	public Flight(String flightId, MyDate date, String depTime, int terminalNum, String brand, String arriveAirPort) {
+	public Flight(String flightId, MyDate date, String depTime, String arrTime, int terminalNum, String brand,
+			String arriveAirPort) {
 		setFlightId(flightId);
 		setArriveAirPort(arriveAirPort);
+		setDepAirPort("TLV Ben Gurion");
 		setDepTime(depTime);
+		setArrTime(arrTime);
 		setDate(date);
 		setTerminalNum(terminalNum);
 		setBrand(brand);
-		this.depAirPort = "TLV Ben Gurion";
+
 	}
 
 	public Flight() {
@@ -105,7 +111,10 @@ public class Flight {
 	}
 
 	public void setFlightId(String flightId) {
-		this.flightId = flightId;
+		if (flightId.contains("LY"))
+			this.flightId = flightId;
+		else
+			this.flightId = "LY" + flightId;
 	}
 
 	public void setDepAirPort(String depAirPort) {
@@ -133,22 +142,24 @@ public class Flight {
 
 	@Override
 	public String toString() {
-		double depTimeInt = timeStrToDouble(depTime);
-
-		return "Flight Id:" + flightId + ", Arrival A.P: " + arriveAirPort + ", Dept. Air.P: " + depAirPort
-				+ ", Dept. Time: " + depTime + ", Estimated Time: " + df.format(Math.abs(depTimeInt))
-				+ " Hours, Price: " + price + "$";
-
+		return "Brand: " + brand + ", Arrival AirPort: " + arriveAirPort + ", Deptarture Date: " + getDate().toString()
+				+ ", Departure Time: " + depTime + ", Flight Id:" + flightId + ", Terminal: " + terminalNum;
 	}
 
-	// know about all the flights
-	// simple program
-	// menu that
-	// 1 . outgoin flight
-	// incoming flights
-	// view outgoin by sorted by time
-	// ou go out
-	// add freature - save to files
-	// uyser can enter the details.
-	// the details
+	public boolean isFlagInOut() {
+		return flagInOut;
+	}
+
+	public void setFlagInOut(boolean flagInOut) {
+		this.flagInOut = flagInOut;
+	}
+
+	public String getArrTime() {
+		return arrTime;
+	}
+
+	public void setArrTime(String arrTime) {
+		this.arrTime = arrTime;
+	}
+
 }

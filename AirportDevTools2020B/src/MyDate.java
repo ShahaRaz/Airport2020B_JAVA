@@ -16,47 +16,44 @@ public class MyDate {
 	private final static int[] DAYS_MONTHS = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
 	public MyDate(int day, int month, int year) {
-		setMonthNDay(month, day);
+		setMonthNDay(day, month);
 		setYear(year);
 
 	}
 
-
-	public MyDate(Scanner scn) {
-		int day, month, year;
-		System.out.println("insert day (numbers only) : ");
-		day = Integer.parseInt(scn.nextLine());
-		System.out.println("insert month (numbers only) :");
-		month = Integer.parseInt(scn.nextLine());
-		System.out.println("insert year (4 Digits) :");
-		year = Integer.parseInt(scn.nextLine());
-		setMonthNDay(month, day);
-		setYear(year);
-	} // manually add day
-//
-//	public void save(PrintWriter pw) {
-//		pw.print(getDay() + ", ");
-//		pw.print(getMonth() + ", ");
-//		pw.println(getYear()); // end and jump pointer to next line.
-//	}
-
-	private void setYear(int year) {
-		if (year >= 1900 && year < CURRENT_YEAR)
-			this.year = year;
-		else {
-			if (year < 1900) {
-				this.year = 2000;
-			} else if (year >= 2020) {
-				this.year = 2020;
-				this.month = 1;
+	// date Exception //
+	public static int makeDate(Scanner s) {
+		int dateNum = 0;
+		while (dateNum == 0) {
+			try {
+				dateNum = Integer.parseInt(s.nextLine());
+			} catch (Exception e) {
+				System.err.println("Error! Wrong input. Try again!");
 			}
 		}
-	} // Required logic applied
+		return dateNum;
+	}
 
-	private void setMonthNDay(int month, int day) {
-		// TODO check if there is a better way to specify the correct day & month
+	public MyDate(Scanner scn) {
+		System.out.println("Insert Day and Month (numbers only) : ");
+		setMonthNDay(makeDate(scn), makeDate(scn));
+		System.out.println("Insert year (4 Digits) :");
+		setYear(makeDate(scn));
+	}
+
+	private void setYear(int year) {
+		if (year < CURRENT_YEAR) {
+			System.out.println("We take flights from 2020 and on ...\n going by default: 2020");
+			this.year = CURRENT_YEAR;
+		} else
+			this.year = year;
+	}
+
+	private void setMonthNDay(int day, int month) {
 		this.month = month;
 		if (month > 12 || month < 1) { // case is invalid is go to January
+			System.out.println(day + "/" + month); 
+			System.out.println("Wrong month input - goes January by Default.");
 			this.month = 1;
 			this.day = 31;
 		} else if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
@@ -76,6 +73,8 @@ public class MyDate {
 		else
 			this.day = 1;
 	}
+	
+
 
 	public int daysCount(MyDate d) {
 		LocalDate enter = LocalDate.of(year, month, day);
@@ -92,11 +91,23 @@ public class MyDate {
 
 	@Override
 	public String toString() {
-		return  day + "/" + month + "/" + year;
+		String nDay = day + "";
+		String nMonth = month + "";
+
+		if (day < 10)
+			nDay = "0" + nDay;
+		if (month < 10)
+			nMonth = "0" + nMonth;
+
+		return nDay + "/" + nMonth + "/" + year;
 	}
 
 	public int getYear() {
 		return this.year;
+	}
+
+	public int getDay() {
+		return this.day;
 	}
 
 	public int getMonth() {
