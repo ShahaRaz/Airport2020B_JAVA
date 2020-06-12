@@ -4,51 +4,26 @@ public class Flight {
 	public static DecimalFormat df = new DecimalFormat("#.##");
 	public static int Id = 1000;
 
-	private boolean flagInOut = true;
-	private MyDate date;
-	private int terminalNum;
-	private String flightId;
-	private String depAirPort;
-	private String arriveAirPort;
-	private String brand;
-	private String depTime;
-	private String arrTime;
-	private double price;
+	protected MyDate date;
+	protected int terminalNum;
+	protected String flightId;
+	protected String depAirPort;
+	protected String arriveAirPort;
+	protected String brand;
+	protected String depTime;
+	protected String arrTime;
+	protected boolean flag;
 
-	// Flight In // --> The Difference between 2 Constructors is the Arrival-AirPort
-	// against Dept. AirPort //
-	public Flight(String flightId, String depAirPort, MyDate date, String depTime, String arrTime, int terminalNum,
-			String brand) {
-		setFlightId(flightId);
-		setDepAirPort(depAirPort);
-		setArriveAirPort("TLV Ben Gurion");
+	// -> new -> Incoming Flight Constructor //
+	public Flight(String brand, MyDate date, String depTime, String arrTime, String flightId, int terminal,
+			boolean flag) {
+
+		setBrand(brand);
+		setDate(date);
 		setDepTime(depTime);
 		setArrTime(arrTime);
-		setDate(date);
-		setTerminalNum(terminalNum);
-		setBrand(brand);
-	}
-
-	// Flights Out // --> The Difference between 2 Constructors is the
-	// Arrival-AirPort against Dept. AirPort //
-	public Flight(String flightId, MyDate date, String depTime, String arrTime, int terminalNum, String brand,
-			String arriveAirPort) {
 		setFlightId(flightId);
-		setArriveAirPort(arriveAirPort);
-		setDepAirPort("TLV Ben Gurion");
-		setDepTime(depTime);
-		setArrTime(arrTime);
-		setDate(date);
-		setTerminalNum(terminalNum);
-		setBrand(brand);
-
-	}
-
-	public Flight() {
-		flightId = "XX-XXXXXX";
-		arriveAirPort = "KOKOMAN";
-		depTime = "00:00";
-		setPrice(0);
+		setTerminalNum(terminal);
 	}
 
 	// Helpful Methods //
@@ -59,10 +34,6 @@ public class Flight {
 	}
 
 	// Getters //
-
-	public double getPrice() {
-		return price;
-	}
 
 	public static int getId() {
 		return Id;
@@ -96,6 +67,10 @@ public class Flight {
 		return depTime;
 	}
 
+	public boolean isFlag() {
+		return flag;
+	}
+
 	// Setters //
 
 	public static void setId(int id) {
@@ -125,13 +100,6 @@ public class Flight {
 		this.brand = brand;
 	}
 
-	public void setPrice(double time) {
-		if (time <= 0 || time >= 100)
-			this.price = 99.99;
-		else
-			this.price = Math.floor((time * 700) / 3);
-	}
-
 	public void setArriveAirPort(String arriveAirPort) {
 		this.arriveAirPort = arriveAirPort;
 	}
@@ -142,16 +110,7 @@ public class Flight {
 
 	@Override
 	public String toString() {
-		return "Brand: " + brand + ", Arrival AirPort: " + arriveAirPort + ", Deptarture Date: " + getDate().toString()
-				+ ", Departure Time: " + depTime + ", Flight Id:" + flightId + ", Terminal: " + terminalNum;
-	}
-
-	public boolean isFlagInOut() {
-		return flagInOut;
-	}
-
-	public void setFlagInOut(boolean flagInOut) {
-		this.flagInOut = flagInOut;
+		return "Brand: " + brand;
 	}
 
 	public String getArrTime() {
