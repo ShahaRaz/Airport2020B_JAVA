@@ -12,25 +12,17 @@ public class Flight {
 	protected String brand;
 	protected String depTime;
 	protected String arrTime;
-	protected boolean flag;
+	protected int flag;
 
 	// -> new -> Incoming Flight Constructor //
-	public Flight(String brand, MyDate date, String depTime, String arrTime, String flightId, int terminal,
-			boolean flag) {
-
+	public Flight(String brand, MyDate date, String depTime, String arrTime, String flightId, int terminal, int flag) {
 		setBrand(brand);
 		setDate(date);
 		setDepTime(depTime);
 		setArrTime(arrTime);
 		setFlightId(flightId);
 		setTerminalNum(terminal);
-	}
-
-	// Helpful Methods //
-	public static double timeStrToDouble(String time) {
-		String[] split = time.split(":");
-		double finalTime = Double.parseDouble(split[0]) + (Double.parseDouble(split[1]) / 60);
-		return finalTime;
+		setFlag(flag);
 	}
 
 	// Getters //
@@ -67,7 +59,11 @@ public class Flight {
 		return depTime;
 	}
 
-	public boolean isFlag() {
+	public String getArrTime() {
+		return arrTime;
+	}
+
+	public int getFlag() {
 		return flag;
 	}
 
@@ -100,12 +96,20 @@ public class Flight {
 		this.brand = brand;
 	}
 
+	public void setFlag(int flag) {
+		this.flag = flag;
+	}
+
 	public void setArriveAirPort(String arriveAirPort) {
 		this.arriveAirPort = arriveAirPort;
 	}
 
 	public void setDepTime(String depTime) {
-		this.depTime = depTime;
+		this.depTime = setAnyTime(depTime);
+	}
+
+	public void setArrTime(String arrTime) {
+		this.arrTime = setAnyTime(arrTime);
 	}
 
 	@Override
@@ -113,12 +117,24 @@ public class Flight {
 		return "Brand: " + brand;
 	}
 
-	public String getArrTime() {
-		return arrTime;
+	// Helpful Methods //
+	public static double timeStrToDouble(String time) {
+		String[] split = time.split(":");
+		double finalTime = Double.parseDouble(split[0]) + (Double.parseDouble(split[1]) / 60);
+		return finalTime;
 	}
 
-	public void setArrTime(String arrTime) {
-		this.arrTime = arrTime;
+	public String setAnyTime(String time) {
+		if (time.length() % 5 != 0) {
+			String[] split = time.split(":");
+			if (Integer.parseInt(split[0]) < 10 && Integer.parseInt(split[1]) < 10)
+				return "0" + split[0] + ":0" + split[1];
+			else if (Integer.parseInt(split[0]) < 10 && Integer.parseInt(split[1]) > 10)
+				return "0" + split[0] + ":" + split[1];
+			else if (Integer.parseInt(split[0]) > 10 && Integer.parseInt(split[1]) < 10)
+				return split[0] + ":0" + split[1];
+		} else
+			return time;
+		return null;
 	}
-
 }

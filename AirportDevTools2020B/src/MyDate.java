@@ -18,7 +18,6 @@ public class MyDate {
 	public MyDate(int day, int month, int year) {
 		setMonthNDay(day, month);
 		setYear(year);
-
 	}
 
 	// date Exception //
