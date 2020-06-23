@@ -51,7 +51,7 @@ public class MyDate {
 	private void setMonthNDay(int day, int month) {
 		this.month = month;
 		if (month > 12 || month < 1) { // case is invalid is go to January
-			System.out.println(day + "/" + month); 
+			System.out.println(day + "/" + month);
 			System.out.println("Wrong month input - goes January by Default.");
 			this.month = 1;
 			this.day = 31;
@@ -72,8 +72,6 @@ public class MyDate {
 		else
 			this.day = 1;
 	}
-	
-
 
 	public int daysCount(MyDate d) {
 		LocalDate enter = LocalDate.of(year, month, day);
@@ -116,6 +114,30 @@ public class MyDate {
 	public String getMonthYearName() {
 		monthName monthStr = monthName.values()[(this.month - 1)];
 		return monthStr.toString() + this.year;
+	}
+
+	public boolean before(MyDate date) {
+		if (date == null)
+			return true;
+		if (this.year < date.getYear())
+			return true;
+		else if (this.year == date.getYear() && this.month < date.getMonth())
+			return true;
+		else if (this.year == date.getYear() && this.month == date.getMonth() && this.day < date.getDay())
+			return true;
+		return false;
+	}
+
+	public boolean after(MyDate date) {
+		if (date == null)
+			return true;
+		if (this.year > date.getYear())
+			return true;
+		else if (this.year == date.getYear() && this.month > date.getMonth())
+			return true;
+		else if (this.year == date.getYear() && this.month == date.getMonth() && this.day > date.getDay())
+			return true;
+		return false;
 	}
 
 }

@@ -8,6 +8,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+/**
+ * @authors ${Avner Levy & Shachar Raz}
+ *
+ */
 
 public class Program {
 	public static boolean isOK = false;
@@ -33,95 +37,101 @@ public class Program {
 	public static final String FILE_NAME = "Input.txt";
 
 	public static void main(String[] args) throws FileNotFoundException {
+		createBrandsSet();
+		addAirPorts();
 		activition();
 		scn.close();
 
 	}
-
+	// Activate the Menu //
 	public static void activition() throws FileNotFoundException {
-		createBrandsSet();
-		addAirPorts();
 		System.out.println("Welcome\nPlease Choose by entering number:");
 		isOK = false;
-		while (!isOK) {
-			for (int i = 0; i < 15; i++) {
-				System.out.print("- ");
-			}
-			System.out.println("\n0 - Auto-Add new Flight");
-			System.out.println("1 - Add new Flight");
-			System.out.println("2 - Remove Flight");
-			System.out.println("3 - Sort flights by...");
-			System.out.println("4 - Save from File");
-			System.out.println("5 - Load to File");
-			System.out.println("6 - Print All Flights");
-			System.out.println("7 - Remove All Flights");
-			System.out.println("8 - Search Flights by Terms ");
-			System.out.println("9 - EXIT");
-
-			for (int i = 0; i < 15; i++) {
-				System.out.print("- ");
-			}
-
-			System.out.print("\nYour Choice: ");
-			int userChoice = Integer.parseInt(scn.nextLine());
-			switch (userChoice) {
-			case 0:
-				AutoAdd();
-				System.out.println("Flight has been added Successfully");
-				isOK = false;
-				break;
-
-			case 1:
-				addFlight();
-				System.out.println("Flight has been added Successfully");
-				isOK = false;
-				break;
-			case 2:
-//				removeFlight();
-				System.out.println("Flight has been added Successfully");
-				isOK = false;
-				break;
-			case 3:
-				sortFlights();
-				isOK = false;
-				break;
-			case 4:
-				try {
-					saveToFile();
-				} catch (Exception e1) {
-					e1.printStackTrace();
+		try {
+			while (!isOK) {
+				for (int i = 0; i < 15; i++) {
+					System.out.print("- ");
 				}
-				System.out.println("Flight has been Saved Successfully");
-				isOK = false;
-				break;
-			case 5:
-				try {
-					loadFromFile();
-				} catch (Exception e) {
-					System.err.println("Error! Something Went Wrong. Try Again!");
-					e.printStackTrace();
+				System.out.println("\n1 - Auto-Add new Flight");
+				System.out.println("2 - Add new Flight");
+				System.out.println("3 - Sort flights by...");
+				System.out.println("4 - Save from File");
+				System.out.println("5 - Load to File");
+				System.out.println("6 - Print All Flights");
+				System.out.println("7 - Remove All Flights");
+				System.out.println("8 - Search Flights by Terms ");
+				System.out.println("9 - Shuffle Flight Dates");
+				System.out.println("10 - EXIT");
+
+				for (int i = 0; i < 15; i++) {
+					System.out.print("- ");
+				}
+
+				System.out.print("\nYour Choice: ");
+				int userChoice = Integer.parseInt(scn.nextLine());
+				switch (userChoice) {
+				case 1:
+					AutoAdd();
+					System.out.println("Flight has been added Successfully");
+					isOK = false;
 					break;
+					
+				case 2:
+					addFlight();
+					System.out.println("Flight has been added Successfully");
+					isOK = false;
+					break;
+				case 3:
+					sortFlights();
+					isOK = false;
+					break;
+				case 4:
+					try {
+						saveToFile();
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+					System.out.println("Flight has been Saved Successfully");
+					isOK = false;
+					break;
+				case 5:
+					try {
+						loadFromFile();
+					} catch (Exception e) {
+						System.err.println("Error! Something Went Wrong. Try Again!");
+						e.printStackTrace();
+						break;
+					}
+					System.out.println("Flight has been Loaded Successfully");
+					isOK = false;
+					break;
+				case 6:
+					showFlights();
+					isOK = false;
+					break;
+				case 8:
+					List<Flight> al = SearchByTerms(allFlights);
+					Collections.sort(al, sortByDepDate);
+					miniShowFlights(al);
+					isOK = false;
+					break;
+				case 9:
+					Collections.shuffle(allFlights);
+					isOK = false;
+					break;
+				case 10:
+					isOK = true;
+					break;
+
+				default:
+					System.out.println("Wrong input try again");
+					isOK = false;
 				}
-				System.out.println("Flight has been Loaded Successfully");
-				isOK = false;
-				break;
-			case 6:
-				showFlights();
-				isOK = false;
-				break;
-			case 8:
-				SearchByTerms(allFlights);
-
-			case 9:
-				isOK = true;
-				break;
-
-			default:
-				System.out.println("Wrong input try again");
-				isOK = false;
 			}
+		} catch (Exception e) {
+			System.out.println("Invalid Input...");
+			activition();
 		}
-
 	}
 
 	private static void saveToFile() throws Exception {
@@ -204,45 +214,10 @@ public class Program {
 		switch (c) {
 		case '1':
 //			 list 1 //
-			Collections.sort(flightsIn, new Comparator<Flight>() {
-				@Override
-				public int compare(Flight o1, Flight o2) {
-					String date1 = o1.getDate().toString();
-					String date2 = o2.getDate().toString();
+			Collections.sort(flightsIn, sortByDepDate);
 
-					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-					int res = 0;
-					try {
-						res = sdf.parse(date1).compareTo(sdf.parse(date2));
-					} catch (ParseException e) {
-						e.printStackTrace();
-					}
-					if (res != 0)
-						return res;
-					return o1.getDepTime().compareTo(o2.getDepTime());
-
-				}
-			});
 //			 list 2 //
-			Collections.sort(flightsOut, new Comparator<Flight>() {
-				@Override
-				public int compare(Flight o1, Flight o2) {
-					String date1 = o1.getDate().toString();
-					String date2 = o2.getDate().toString();
-
-					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-					int res = 0;
-					try {
-						res = sdf.parse(date1).compareTo(sdf.parse(date2));
-					} catch (ParseException e) {
-						e.printStackTrace();
-					}
-					if (res != 0)
-						return res;
-					return o1.getDepTime().compareTo(o2.getDepTime());
-
-				}
-			});
+			Collections.sort(flightsOut, sortByDepDate);
 
 			for (Flight f : flightsIn) {
 				allFlights.add(f);
@@ -255,45 +230,10 @@ public class Program {
 
 		case '2':
 //			 list 1 //
-			Collections.sort(flightsIn, new Comparator<Flight>() {
-				@Override
-				public int compare(Flight o1, Flight o2) {
-					String date1 = o1.getDate().toString();
-					String date2 = o2.getDate().toString();
+			Collections.sort(flightsIn, sortByArrivalDate);
 
-					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-					int res = 0;
-					try {
-						res = sdf.parse(date1).compareTo(sdf.parse(date2));
-					} catch (ParseException e) {
-						e.printStackTrace();
-					}
-					if (res != 0)
-						return res;
-					return o1.getArrTime().compareTo(o2.getArrTime());
-
-				}
-			});
 //			 list 2 //
-			Collections.sort(flightsOut, new Comparator<Flight>() {
-				@Override
-				public int compare(Flight o1, Flight o2) {
-					String date1 = o1.getDate().toString();
-					String date2 = o2.getDate().toString();
-
-					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-					int res = 0;
-					try {
-						res = sdf.parse(date1).compareTo(sdf.parse(date2));
-					} catch (ParseException e) {
-						e.printStackTrace();
-					}
-					if (res != 0)
-						return res;
-					return o1.getArrTime().compareTo(o2.getArrTime());
-
-				}
-			});
+			Collections.sort(flightsOut, sortByArrivalDate);
 
 			for (Flight f : flightsIn) {
 				allFlights.add(f);
@@ -315,8 +255,10 @@ public class Program {
 		flightsIn.clear();
 		flightsOut.clear();
 
-		if (!allFlights.isEmpty() && flightsIn.isEmpty() && flightsOut.isEmpty())
+		if (!allFlights.isEmpty() && flightsIn.isEmpty() && flightsOut.isEmpty()) {
+			allFlights.sort(sortByDepDate);
 			spreadFlights();
+		}
 		System.out.println(allFlights.size() + " " + flightsIn.size() + " " + flightsOut.size());
 
 		System.out.println("\nIncoming Flights: ");
@@ -337,7 +279,8 @@ public class Program {
 
 	}
 
-	public static void SearchByTerms(List<Flight> arr) {
+	public static List<Flight> SearchByTerms(List<Flight> arr) {
+		List<Flight> l = new ArrayList<>();
 		String brand = "";
 		String country = "";
 		String city = "";
@@ -347,46 +290,60 @@ public class Program {
 		int weekDays = 1;
 
 		System.out.println("Which Air-Line Brand? (1-" + (brands.size() + 1) + ")");
-		int i = 1;
+		int i = 0;
+		System.out.println(i + ") Any Flight Company...");
+
 		for (String s : brands)
-			System.out.println(i++ + ") " + s);
-		
-		do {
+			System.out.println(++i + ") " + s);
+		System.out.println(++i + ") Other brands");
+		try {
+			i = Integer.parseInt(scn.nextLine());
+		} catch (Exception e) {
+			System.out.println("Invalid Input... Try again!");
 			i = Integer.parseInt(scn.nextLine());
 		}
-		
-		while (i > 5 || i < 0);
-			System.out.println(i);
-			if (i == 5) {
-				System.out.println("Whitch Flight Company?");
-				brand = scn.nextLine();
-			} else
-				brand = brands.get(i - 1);
-		
 
+		if (i == 5) {
+			System.out.println("Whitch Flight Company?");
+			brand = scn.nextLine();
+
+		} else if (i == 0)
+			brand = "";
+		else if (i < 5 && i > 0)
+			brand = brands.get(i - 1);
+		else
+			System.out.println("No Company Chosen...");
 		System.out.println("Which Country?");
 		country = scn.nextLine();
 		System.out.println("Which City?");
 		city = scn.nextLine();
-		System.out.println("4) by Air-Port");
+		System.out.println("Which Air-Port?");
 		airport = scn.nextLine();
 		System.out.println("What is the Starting Date?");
 		try {
+			System.out.print("Insert a day: ");
 			int days = Integer.parseInt(scn.nextLine());
+			System.out.print("Insert Month: ");
 			int mos = Integer.parseInt(scn.nextLine());
+			System.out.print("Insert Year: ");
 			int year = Integer.parseInt(scn.nextLine());
 			startDate = new MyDate(days, mos, year);
 		} catch (Exception e) {
 			System.out.println("Didnt Work Out");
+			startDate = new MyDate(1, 1, 1990);
 		}
 		System.out.println("What is the Ending Date?");
 		try {
+			System.out.print("Insert a day: ");
 			int days = Integer.parseInt(scn.nextLine());
+			System.out.print("Insert Month: ");
 			int mos = Integer.parseInt(scn.nextLine());
+			System.out.print("Insert Year: ");
 			int year = Integer.parseInt(scn.nextLine());
 			endingDate = new MyDate(days, mos, year);
 		} catch (Exception e) {
 			System.out.println("Didnt Work Out");
+			endingDate = new MyDate(30, 12, 2050);
 		}
 
 		System.out.println("How many Days in a Week?");
@@ -397,24 +354,22 @@ public class Program {
 		}
 		int counter = 0;
 		for (Flight f : arr) {
-//			System.out.println((f.getBrand().compareToIgnoreCase(brand) == 0
-//					&& (f.getDepAirPort().contains(country) || f.getArriveAirPort().contains(country))
-//					&& (f.getDepAirPort().contains(city) || f.getArriveAirPort().contains(city))));
-			if ((f.getBrand().contains(brand))
+			if ((f.getBrand().contains(brand)) && f.getDate().before(endingDate) && f.getDate().after(startDate)
 					&& (f.getDepAirPort().contains(country) || f.getArriveAirPort().contains(country))
-					&& (f.getDepAirPort().contains(city) || f.getArriveAirPort().contains(city))) {
+					&& (f.getDepAirPort().contains(city) || f.getArriveAirPort().contains(city))
+					&& (f.getDepAirPort().contains(airport) || f.getArriveAirPort().contains(airport))) {
 				;
 				counter++;
-				System.out.println(f);
+				l.add(f);
 			}
 		}
 		if (counter == 0)
 			System.out.println("No Match Found");
+		return l;
 
 	}
 
 	// HelpFull Methods //
-
 //	public static ArrayList<>
 
 	// Auto add //
@@ -431,16 +386,15 @@ public class Program {
 			hrsOut = (int) (1 + Math.random() * 23);
 		}
 		flag = (int) (1 + Math.random() * 2);
-		System.out.println("min --->>" + minIn);
 		Collections.shuffle(airPorts);
 		int size = airPorts.size() - 1;
 		int p = (int) (1 + Math.random() * size);
 		if (flag == 1)
-			allFlights.add(new FlightIn(brands.get((int) (1 + Math.random() * 3)), airPorts.get(p),
+			allFlights.add(new FlightIn(brands.get((int) (Math.random() * 4)), airPorts.get(p),
 					new MyDate(day, mons, 2020), hrsOut + ":" + minOut, hrsIn + ":" + minIn,
 					(100 + Math.random() * 5) + "", (int) (1 + Math.random() * 3), flag));
 		else
-			allFlights.add(new FlightOut(brands.get((int) (1 + Math.random() * 3)), airPorts.get(p),
+			allFlights.add(new FlightOut(brands.get((int) (Math.random() * 4)), airPorts.get(p),
 					new MyDate(day, mons, 2020), hrsOut + ":" + minOut, hrsIn + ":" + minIn,
 					(100 + Math.random() * 5) + "", (int) (1 + Math.random() * 3), flag));
 
@@ -487,12 +441,26 @@ public class Program {
 	}
 
 	// Spreads Flights from AllFlights to FlightIn and FlightOut //
+
 	public static void spreadFlights() {
 		for (Flight f : allFlights) {
 			if (f.getFlag() == 1)
 				flightsIn.add((FlightIn) f);
 			else
 				flightsOut.add((FlightOut) f);
+		}
+	}
+
+	public static void miniShowFlights(List<Flight> l) {
+		System.out.println("Flights In:");
+		for (Flight f : l) {
+			if (f.getFlag() == 1)
+				System.out.println(f);
+		}
+		System.out.println("Flights Out:");
+		for (Flight f : l) {
+			if (f.getFlag() == 2)
+				System.out.println(f);
 		}
 	}
 
@@ -556,4 +524,44 @@ public class Program {
 		airPorts.add("Madrid Air-Port, Spain");
 	}
 
+// Inner Comparators for Sorts //
+	public static Comparator<Flight> sortByDepDate = new Comparator<Flight>() {
+		@Override
+		public int compare(Flight o1, Flight o2) {
+			String date1 = o1.getDate().toString();
+			String date2 = o2.getDate().toString();
+
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			int res = 0;
+			try {
+				res = sdf.parse(date1).compareTo(sdf.parse(date2));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			if (res != 0)
+				return res;
+			return o1.getDepTime().compareTo(o2.getDepTime());
+
+		}
+	};
+
+	public static Comparator<Flight> sortByArrivalDate = new Comparator<Flight>() {
+		@Override
+		public int compare(Flight o1, Flight o2) {
+			String date1 = o1.getDate().toString();
+			String date2 = o2.getDate().toString();
+
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			int res = 0;
+			try {
+				res = sdf.parse(date1).compareTo(sdf.parse(date2));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			if (res != 0)
+				return res;
+			return o1.getArrTime().compareTo(o2.getArrTime());
+
+		}
+	};
 }
