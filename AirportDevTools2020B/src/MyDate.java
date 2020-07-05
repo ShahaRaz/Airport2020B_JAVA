@@ -1,4 +1,6 @@
 
+import java.text.ParseException;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Scanner;
@@ -14,6 +16,22 @@ public class MyDate {
 	private int month;
 	private int year;
 	private final static int[] DAYS_MONTHS = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+	public static String specDay(String date) throws ParseException {
+		return "";
+	}
+
+	public int getFirstDayInMyWeek() {
+		LocalDate me = LocalDate.of(this.year, this.month, this.day-7);
+		me = me.with(DayOfWeek.SUNDAY); // TODO check if works
+		return me.getDayOfMonth();
+//		DayOfWeek temp = (me.getDayOfWeek());
+//		int formatMe = temp.getValue();// weeks here from monday=1 to sunday=7
+//		if (formatMe == 7)
+//			return 1;
+//		else
+//			return formatMe + 1;
+	}
 
 	public MyDate(int day, int month, int year) {
 		setMonthNDay(day, month);

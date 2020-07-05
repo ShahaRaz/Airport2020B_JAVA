@@ -44,4 +44,7 @@ class testsss {
 			assertEquals(expectedOutput, sb.toString());
 		}
 	}
+//	MyDate temp = new MyDate (17,9, 2020);
+//	int test = temp.getFirstDayInMyWeek();
+//	System.out.println("first day of the week is" + test);
 }

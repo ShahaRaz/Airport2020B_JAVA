@@ -1,4 +1,5 @@
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 
 public class Flight {
 	public static DecimalFormat df = new DecimalFormat("#.##");
@@ -137,4 +138,10 @@ public class Flight {
 			return time;
 		return null;
 	}
+
+	public String getDayInWeek() {
+		LocalDate me = LocalDate.of(date.getYear(), date.getMonth(), date.getDay());
+		return me.getDayOfWeek().toString();
+	}
+
 }

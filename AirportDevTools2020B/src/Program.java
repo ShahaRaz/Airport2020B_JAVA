@@ -8,8 +8,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+
 /**
- * @authors ${Avner Levy & Shachar Raz}
+ * @authors ${Avner Levy & Shahar Raz}
  *
  */
 
@@ -31,7 +32,7 @@ public class Program {
 	public static List<Flight> allFlights = new ArrayList<>();
 	private static List<Flight> flightsIn = new ArrayList<>();
 	private static List<Flight> flightsOut = new ArrayList<>();
-	public static List<String> airPorts = new ArrayList<String>();
+	public static List<String> airPorts = new ArrayList<>();
 	// I/O VARIABLES //
 	public static Scanner scn = new Scanner(System.in);
 	public static final String FILE_NAME = "Input.txt";
@@ -41,8 +42,8 @@ public class Program {
 		addAirPorts();
 		activition();
 		scn.close();
-
 	}
+
 	// Activate the Menu //
 	public static void activition() throws FileNotFoundException {
 		System.out.println("Welcome\nPlease Choose by entering number:");
@@ -75,7 +76,7 @@ public class Program {
 					System.out.println("Flight has been added Successfully");
 					isOK = false;
 					break;
-					
+
 				case 2:
 					addFlight();
 					System.out.println("Flight has been added Successfully");
@@ -287,7 +288,7 @@ public class Program {
 		String airport = "";
 		MyDate startDate = null;
 		MyDate endingDate = null;
-		int weekDays = 1;
+		String weekDays = "";
 
 		System.out.println("Which Air-Line Brand? (1-" + (brands.size() + 1) + ")");
 		int i = 0;
@@ -345,16 +346,33 @@ public class Program {
 			System.out.println("Didnt Work Out");
 			endingDate = new MyDate(30, 12, 2050);
 		}
-
-		System.out.println("How many Days in a Week?");
+		// String => Sunday Friday Monday <= String//
 		try {
-			weekDays = Integer.parseInt(scn.nextLine());
+			System.out.println("Which Day in the Week you Prefer?");
+			weekDays += scn.nextLine() + " ";
+
+			while (true) {
+				System.out.println("Any other day?");
+				System.out.println("1) yes\n2) no");
+				String res = scn.nextLine();
+				if (res.compareTo("1") == 0) {
+					System.out.println("which day you prefer?");
+					weekDays += scn.nextLine() + " ";
+				} else if (res.compareTo("2") == 0) {
+					System.out.println("OK, Lets go forward...");
+					break;
+				} else {
+					System.out.println("Invalid input, Lets go forward...");
+					break;
+				}
+			}
 		} catch (Exception e) {
 			System.out.println("Error! Going 1 By-Defualt");
 		}
 		int counter = 0;
 		for (Flight f : arr) {
-			if ((f.getBrand().contains(brand)) && f.getDate().before(endingDate) && f.getDate().after(startDate)
+			if ((weekDays.toUpperCase()).contains(f.getDayInWeek()) && (f.getBrand().contains(brand))
+					&& f.getDate().before(endingDate) && f.getDate().after(startDate)
 					&& (f.getDepAirPort().contains(country) || f.getArriveAirPort().contains(country))
 					&& (f.getDepAirPort().contains(city) || f.getArriveAirPort().contains(city))
 					&& (f.getDepAirPort().contains(airport) || f.getArriveAirPort().contains(airport))) {

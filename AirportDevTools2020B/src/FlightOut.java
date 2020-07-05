@@ -11,7 +11,7 @@ public class FlightOut extends Flight {
 
 	@Override
 	public String toString() {
-		return "Brand: " + brand + ", Arrival Air-Port: " + arriveAirPort + ", Deptarture Date: " + getDate().toString()
+		return "Brand: " + brand + ", Arrival Air-Port: " + arriveAirPort + ", " + getDayInWeek() + ", Deptarture Date: " + getDate().toString()
 				+ ", Departure Time: " + depTime + ", Arrival Time: " + arrTime + ", Flight Id:" + flightId
 				+ ", Terminal: " + terminalNum;
 	}
