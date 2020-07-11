@@ -1,0 +1,25 @@
+
+___________________________________
+use me to hand over a copy of arraylist instead of the list itself:
+FROM ELECTION PROJECT
+
+ 
+		try {
+			ArrayList<Ballot> eBallots = (ArrayList<Ballot>) ListUtils.clone(gBallots);
+			ArrayList<Voter> eVoters = (ArrayList<Voter>) ListUtils.clone(gVoters);
+			ArrayList<Candidate> eCandidates = (ArrayList<Candidate>) ListUtils.clone(gCandidates);
+			ArrayList<Party> eParties = (ArrayList<Party>) ListUtils.clone(gParties);
+
+			ElectionsRound currentElections = new ElectionsRound(eCandidates, eBallots, eParties, eVoters,
+					electionsDate);
+			currentElections.runElections();
+			this.electionsRounds.add(currentElections); // add to DataBase
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		
+	______________________________________

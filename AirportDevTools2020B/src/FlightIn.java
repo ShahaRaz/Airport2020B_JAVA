@@ -1,5 +1,5 @@
 
-public class FlightIn extends Flight {
+public class FlightIn extends Flight implements Cloneable {
 	private String depCity;
 
 	public FlightIn(String brand, String depAirPort, MyDate date, String depTime, String arrTime, String flightId,

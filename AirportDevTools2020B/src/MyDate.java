@@ -1,5 +1,4 @@
 
-import java.text.ParseException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Period;
@@ -12,25 +11,23 @@ public class MyDate {
 
 	final static int CURRENT_YEAR = 2020;
 	// MyDate date=new MyDate(19, 6, 2015);
+	
 	private int day;
 	private int month;
 	private int year;
 	private final static int[] DAYS_MONTHS = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
-	public static String specDay(String date) throws ParseException {
-		return "";
-	}
 
 	public int getFirstDayInMyWeek() {
 		LocalDate me = LocalDate.of(this.year, this.month, this.day-7);
-		me = me.with(DayOfWeek.SUNDAY); // TODO check if works
+		me = me.with(DayOfWeek.SUNDAY);
 		return me.getDayOfMonth();
-//		DayOfWeek temp = (me.getDayOfWeek());
-//		int formatMe = temp.getValue();// weeks here from monday=1 to sunday=7
-//		if (formatMe == 7)
-//			return 1;
-//		else
-//			return formatMe + 1;
+	}
+	
+	public int getDayInWeekSundayInIndex0() {
+		int monthDay=this.getFirstDayInMyWeek();
+		return (this.month-monthDay);
+		
 	}
 
 	public MyDate(int day, int month, int year) {
@@ -57,6 +54,7 @@ public class MyDate {
 		System.out.println("Insert year (4 Digits) :");
 		setYear(makeDate(scn));
 	}
+
 
 	private void setYear(int year) {
 		if (year < CURRENT_YEAR) {

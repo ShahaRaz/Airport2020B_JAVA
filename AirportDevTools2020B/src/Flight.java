@@ -1,7 +1,7 @@
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 
-public class Flight {
+public class Flight implements Cloneable{
 	public static DecimalFormat df = new DecimalFormat("#.##");
 	public static int Id = 1000;
 
@@ -67,7 +67,26 @@ public class Flight {
 	public int getFlag() {
 		return flag;
 	}
+	public String getCountry() {
+		
+		if(this.arriveAirPort.contains("Israel"))
+			return this.depAirPort;
+		else
+			return this.arriveAirPort;
+	}
+	public String getCity() {
+		if(this.arriveAirPort.contains("Tel"))
+			return this.depAirPort;
+		else
+			return this.arriveAirPort;
+	}
 
+	public String getAirport() {
+		if(this.arriveAirPort.contains("Gurion"))
+			return this.depAirPort;
+		else
+			return this.arriveAirPort;
+	}
 	// Setters //
 
 	public static void setId(int id) {
