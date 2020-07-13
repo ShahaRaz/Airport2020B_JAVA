@@ -5,6 +5,9 @@ public class FlightOut extends Flight implements Cloneable {
 			int terminal, int flag) {
 		super(brand, date, depTime, arrTime, flightId, terminal, flag);
 		setArriveAirPort(arrAirPort);
+		String[] airportSplit = arrAirPort.split(",");
+		setCity(airportSplit[0]);
+		setCountry(airportSplit[1]);
 		setDepAirPort("Ben Gurion, TLV");
 
 	}

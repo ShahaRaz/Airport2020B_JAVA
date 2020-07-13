@@ -9,6 +9,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
+import interfaces.Massageable;
+import interfaces.consoleUI;
+
 /**
  * @authors ${Avner Levy & Shahar Raz}
  *
@@ -37,6 +40,7 @@ public class Program {
 	// I/O VARIABLES //
 	public static Scanner scn; // system.in scanner 
 	public static final String FILE_NAME = "Input.txt";
+	public static Massageable ui = new consoleUI();
 
 	public static void main(String[] args) throws FileNotFoundException {
 		scn = new Scanner(System.in);
@@ -50,16 +54,17 @@ public class Program {
 		for (int i = 0; i < 15; i++) {
 			System.out.print("- ");
 		}
-		System.out.println("\n1 - Auto-Add new Flight");
-		System.out.println("2 - Add new Flight");
-		System.out.println("3 - Sort flights by...");
-		System.out.println("4 - Save to File");
-		System.out.println("5 - Load from File");
-		System.out.println("6 - Print All Flights");
-		System.out.println("7 - Remove All Flights");
-		System.out.println("8 - Search Flights by Terms ");
-		System.out.println("9 - Shuffle Flight Dates");
-		System.out.println("10 - EXIT");
+		
+		ui.showMassage("\n1 - Auto-Add new Flight");
+		ui.showMassage("2 - Add new Flight");
+		ui.showMassage("3 - Sort flights by...");
+		ui.showMassage("4 - Save to File");
+		ui.showMassage("5 - Load from File");
+		ui.showMassage("6 - Print All Flights");
+		ui.showMassage("7 - Remove All Flights");
+		ui.showMassage("8 - Search Flights by Terms ");
+		ui.showMassage("9 - Shuffle Flight Dates");
+		ui.showMassage("10 - EXIT");
 
 		for (int i = 0; i < 15; i++) {
 			System.out.print("- ");
@@ -69,38 +74,40 @@ public class Program {
 	}
 	// Activate the Menu //
 	public static void activition() throws FileNotFoundException {
-		System.out.println("Welcome\nPlease Choose by entering number:");
+		ui.showMassage("Welcome\nPlease Choose by entering number:");
 		boolean isOK = false;
 		try {
 			while (!isOK) {
 				printMainMenu();
-				int userChoice = Integer.parseInt(scn.nextLine());
+				String userChoice=scn.nextLine();
+				
+				
 				switch (userChoice) {
-				case 1:
+				case "1":
 					AutoAdd();
-					System.out.println("Flight has been added Successfully");
+					ui.showMassage("Flight has been added Successfully");
 					isOK = false;
 					break;
 
-				case 2:
+				case "2":
 					addFlight();
-					System.out.println("Flight has been added Successfully");
+					ui.showMassage("Flight has been added Successfully");
 					isOK = false;
 					break;
-				case 3:
+				case "3":
 					sortFlights();
 					isOK = false;
 					break;
-				case 4:
+				case "4":
 					try {
 						saveToFile();
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
-					System.out.println("Flight has been Saved Successfully");
+					ui.showMassage("Flight has been Saved Successfully");
 					isOK = false;
 					break;
-				case 5:
+				case "5":
 					try {
 						loadFromFile(allFlights,flightsIn,flightsOut);
 					} catch (Exception e) {
@@ -108,33 +115,34 @@ public class Program {
 						e.printStackTrace();
 						break;
 					}
-					System.out.println("Flight has been Loaded Successfully");
+					ui.showMassage("Flight has been Loaded Successfully");
 					isOK = false;
 					break;
-				case 6:
+				case "6":
 					showFlights();
 					isOK = false;
 					break;
-				case 8:
+				case "8":
 					SearchByTerms(allFlights);// keep in cases needed in future
 					isOK = false;
 					break;
-				case 9:
+				case "9":
 					Collections.shuffle(allFlights);
 					isOK = false;
 					break;
-				case 10:
+				case "10":
+					ui.showMassage("goodBye");
 					isOK = true;
 					break;
 
 				default:
-					System.out.println("Wrong input try again");
+					ui.showMassage("Wrong input try again");
 					isOK = false;
 				}
 			}
 		} catch (Exception e) {
-			System.out.println("Invalid Input...");
-		//	activition(); //// hhhhhhhhhhhhhh ze adif al do-while ?! haragta oti Avneriyahu
+			ui.showMassage("Invalid Input...");
+		
 		}
 	}
 
@@ -155,7 +163,6 @@ public class Program {
 				raf.writeUTF(f.getTerminalNum() + "");
 				raf.writeUTF(f.getFlag() + "");
 			}
-			raf.close();
 		}
 
 	}
@@ -197,7 +204,7 @@ public class Program {
 
 
 	private static void addFlight() {
-		System.out.println("1) Flight in\n2) Flight Out");
+		ui.showMassage("1) Flight in\n2) Flight Out");
 		boolean isOK=false;
 		while (!isOK) {
 			String inout = scn.nextLine();
@@ -205,13 +212,13 @@ public class Program {
 				pushFlight(inout);
 				isOK = true;
 			} else
-				System.out.println("Wrong input");
+				ui.showMassage("Wrong input");
 		}
 	}
 
 	private static void sortFlights() {
 		allFlights.clear();
-		System.out.println("1) Sort By Departure Time..\n2) Sort By Arriving Time..\nPress any key for main menu");
+		ui.showMassage("1) Sort By Departure Time..\n2) Sort By Arriving Time..\nPress any key for main menu");
 		char c = scn.nextLine().charAt(0);
 
 		switch (c) {
@@ -228,7 +235,7 @@ public class Program {
 			for (Flight f : flightsOut) {
 				allFlights.add(f);
 			}
-			System.out.println("Flight has been Sorted by Departure Time Successfully");
+			ui.showMassage("Flight has been Sorted by Departure Time Successfully");
 			break;
 
 		case '2':
@@ -244,11 +251,11 @@ public class Program {
 			for (Flight f : flightsOut) {
 				allFlights.add(f);
 			}
-			System.out.println("Flight has been Sorted by Departure Time Successfully");
+			ui.showMassage("Flight has been Sorted by Departure Time Successfully");
 			break;
 
 		default:
-			System.out.println("Going back to main menu");
+			ui.showMassage("Going back to main menu");
 			break;
 		}
 
@@ -257,27 +264,27 @@ public class Program {
 	private static void showFlights() {
 		flightsIn.clear();
 		flightsOut.clear();
-		System.out.println("num of flights in allFlights: " + allFlights.size());
-		if (!allFlights.isEmpty() && flightsIn.isEmpty() && flightsOut.isEmpty()) {
+		ui.showMassage("num of flights in allFlights: " + allFlights.size());
+		if (!allFlights.isEmpty()) {
 			allFlights.sort(compareByDepDate);
 			spreadFlights(allFlights,flightsIn , flightsOut);
 		}
-		System.out.println(allFlights.size() + " " + flightsIn.size() + " " + flightsOut.size());
+		ui.showMassage(allFlights.size() + " " + flightsIn.size() + " " + flightsOut.size());
 
-		System.out.println("\nIncoming Flights: ");
+		ui.showMassage("\nIncoming Flights: ");
 		if (flightsIn.size() == 0)
-			System.out.println("No Incoming Flights...");
+			ui.showMassage("No Incoming Flights...");
 		else
 			for (Flight f : flightsIn) {
-				System.out.println(f);
+				ui.showMassage(f.toString());
 			}
 
-		System.out.println("\nOutcoming Flights: ");
+		ui.showMassage("\nOutcoming Flights: ");
 		if (flightsOut.size() == 0)
-			System.out.println("No Outcoming Flights...");
+			ui.showMassage("No Outcoming Flights...");
 		else
 			for (Flight f : flightsOut) {
-				System.out.println(f);
+				ui.showMassage(f.toString());
 			}
 
 	}
@@ -285,8 +292,7 @@ public class Program {
 
 	public static List<Flight> SearchByTerms(List<Flight> flightsArr) {
 	FilterFlights filtered = new FilterFlights(flightsArr,brands);
-	
-	return filtered.getList();
+	return filtered.filterByTerms();
 	}
 
 
@@ -328,7 +334,7 @@ public class Program {
 	}
 	
 	public static MyDate getDateFromUser(Scanner scn) {
-		System.out.println("enter date 'day' 'month' 'year' (example :23 06 1994)");
+		ui.showMassage("enter date 'day' 'month' 'year' (example :23 06 1994)");
 		int day = scn.nextInt();
 		int month = scn.nextInt();
 		int year = scn.nextInt();
@@ -346,18 +352,15 @@ public class Program {
 		String brand;
 		int terminalNum;
 		MyDate date = null;
-		System.out.print("Insert flight ID: ");
-		flightId = scn.nextLine();
-		System.out.print("Insert flight Date: ");
-		date = new MyDate(scn);
-		System.out.print("Insert flight Departure Time: ");
-		depTime = scn.nextLine();
-		System.out.print("Insert flight Arrival Time: ");
-		arrTime = scn.nextLine();
-		System.out.println("Insert flight brad: ");
-		brand = addBrand();
-		System.out.print("Insert flight Terminal Number: ");
-		terminalNum = Integer.parseInt(scn.nextLine());
+		flightId = ui.getString("Insert flight ID: ");
+//		System.out.print("Insert flight ID: ");
+//		flightId = scn.nextLine();
+		ui.showMassage("Insert flight Date: ");
+		getDateFromUser(scn);
+		depTime =ui.getString("Insert flight Departure Time: ");
+		arrTime =ui.getString("Insert flight Arrival Time: ");
+		brand =ui.getString("Insert flight brand: ");
+		terminalNum = Integer.parseInt(ui.getString("Insert Terminal number: "));
 
 		if (n.equals("1")) { // -->> Flight In ///
 			System.out.print("Insert flight Departure Air-Port: ");
@@ -393,15 +396,15 @@ public class Program {
 	}
 
 	public static void miniShowFlights(List<Flight> l) {
-		System.out.println("Flights In:");
+		ui.showMassage("Flights In:");
 		for (Flight f : l) {
 			if (f.getFlag() == 1)
-				System.out.println(f);
+				ui.showMassage(f.toString());
 		}
-		System.out.println("Flights Out:");
+		ui.showMassage("Flights Out:");
 		for (Flight f : l) {
 			if (f.getFlag() == 2)
-				System.out.println(f);
+				ui.showMassage(f.toString());
 		}
 	}
 	
@@ -410,22 +413,22 @@ public class Program {
 		String brand = "";
 		// prints all brands //
 		for (int i = 0; i < brands.size(); i++) {
-			System.out.println((i + 1) + ") " + brands.get(i));
+			ui.showMassage((i + 1) + ") " + brands.get(i));
 			if (i == brands.size() - 1)
-				System.out.println((i + 2) + ") Other ...");
+				ui.showMassage((i + 2) + ") Other ...");
 		}
 		// chooses the brand //
 		int res = Integer.parseInt(scn.nextLine());
 		while (true) {
 			if (res < 0 || res > brands.size() + 1) {
-				System.out.println("Wrong input! Try Again!");
+				ui.showMassage("Wrong input! Try Again!");
 				res = Integer.parseInt(scn.nextLine());
 			} else
 				break;
 		}
 		while (res >= 0 && res <= brands.size() + 1) {
 			if (res == brands.size() + 1) {
-				System.out.println("Whitch Brand?");
+				ui.showMassage("Whitch Brand?");
 				brand = scn.nextLine();
 				break;
 			} else

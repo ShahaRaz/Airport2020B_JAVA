@@ -6,8 +6,11 @@ public class FlightIn extends Flight implements Cloneable {
 			int terminal, int flag) {
 		super(brand, date, depTime, arrTime, flightId, terminal, flag);
 		setDepAirPort(depAirPort);
-		setDepCity(depCity);
+		String[] airportSplit = depAirPort.split(",");
+		setCity(airportSplit[0]);
+		setCountry(airportSplit[1]);
 		setArriveAirPort("Ben-Gurion, TLV");
+		
 	}
 
 	@Override
@@ -21,7 +24,5 @@ public class FlightIn extends Flight implements Cloneable {
 		return depCity;
 	}
 
-	public void setDepCity(String depCity) {
-		this.depCity = depCity;
-	}
+
 }

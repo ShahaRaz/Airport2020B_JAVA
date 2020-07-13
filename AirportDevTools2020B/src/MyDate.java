@@ -25,6 +25,7 @@ public class MyDate {
 	}
 	
 	public int getDayInWeekSundayInIndex0() {
+		//TODO check if works
 		int monthDay=this.getFirstDayInMyWeek();
 		return (this.month-monthDay);
 		

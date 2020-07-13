@@ -1,27 +1,125 @@
 import java.util.ArrayList;
 import java.util.List;
 
+import interfaces.Massageable;
+import interfaces.consoleUI;
+import interfaces.htmlUI;
+
 public class AirPortBoard {
-	
+
 	public static final String FILE_NAME = "Input.txt";
-	
-	
+
 	public static List<Flight> allFlights = new ArrayList<>();
 	private static List<Flight> flightsInBoard = new ArrayList<>();
 	private static List<Flight> flightsOutBoard = new ArrayList<>();
-	
+	public static Massageable ui;
+	private static FilterFlights filtered;
+	// Args: 
+	// 0 - User Interface kind
+	// 1 - departures or Arrivials
+	// 2 - airline brand
+	// 3 - country
+	// 4 - Airport
+	// 5 - starting date
+	// 6 - ending date
+	// 7 - week days [ 1= Sunday , 2=Monday... 7=Saturday] 
+
 	public static void main(String[] args) {
-		if (args.length >0 && args[0].equalsIgnoreCase("departure"))
-			try {
-				Program.loadFromFile(allFlights,flightsInBoard,flightsOutBoard);
-			} catch (Exception e) {
-				System.err.println("Error! Something Went Wrong. Try Again!");
-				e.printStackTrace();
-			}
-		
+		if (args.length == 0) {
+			System.out.println("no args, Exiting");
+			exit();
+		}
+		if (args[0] == "html")
+			ui = new htmlUI();
+		else if (args[0] == "console") 
+			ui = new consoleUI();
+		else {
+			ui.showMassage("first arg must be ui type (html or console)");
+			exit();
+		}
 	
+		try {
+			Program.loadFromFile(allFlights, flightsInBoard, flightsOutBoard); // load all flights from file
+
+		} catch (Exception e) {
+			System.err.println("Error! can't load flights from data base. Try Again!");
+			e.printStackTrace();
+			exit();
+		}
+		// 1 Depar / Arrivial
+		if (args[1].equalsIgnoreCase("departure")) {
+			Program.miniShowFlights(flightsOutBoard);
+			 filtered = new FilterFlights(flightsOutBoard,null);
+		}
+		if (args[1].equalsIgnoreCase("arrivals")) {
+			Program.miniShowFlights(flightsInBoard);
+			 filtered = new FilterFlights(flightsOutBoard,null);
+
+		}
+		// 2 - airline brand
+		if (args[2].length()!=0) {
+//			String[] splitBrands = args[2].split(",");
+//			for (String b:splitBrands) {
+//				filtered.filterByAirlineBrand(b);	
+//			}
+			filtered.filterByAirlineBrand(args[2]);	
+		
+		}
+		
+		// 3 - country
+		if (args[3].length()!=0)
+		{
+//			String[] splitCountry = args[2].split(",");
+//			for (String c:splitCountry) {
+//				filtered.filterByAirlineCountry(c);	
+//			}
+			filtered.filterByAirlineCountry(args[3]);	
+			
+		}
+		// 4 - Airport
+		if (args[4].length()!=0)
+		{
+//			String[] splitAirport = args[2].split(",");
+//			for (String a:splitAirport) {
+//				filtered.filterByAirlineAirport(a);	
+//			}
+			filtered.filterByAirlineAirport(args[4]);
+			
+		}
+		// 5 - Starting Date
+		if (args[5].length()!=0)
+		{
+//			String[] splitAirport = args[2].split(",");
+//			for (String a:splitAirport) {
+//				filtered.filterByAirlineAirport(a);	
+//			}
+			filtered.filterByAirlineAirport(args[5]);	
+			
+		}
+		// 6 - Ending Date
+		if (args[6].length()!=0)
+		{
+			String[] splitAirport = args[2].split(",");
+			for (String a:splitAirport) {
+				filtered.filterByAirlineAirport(a);	
+			}
 			
 			
+		}
+		
+		// 7 - week Days
+		if (args[7].length()!=0)
+		{
+		args[7].toCharArray();
+		
+			
+		}
+
+
+	}
+
+	private static void exit() {
+		ui.showMassage("Goodbye");
 	}
 }
 
@@ -54,12 +152,6 @@ public class AirPortBoard {
 //                                    request.args.get('thursday'), request.args.get('friday'),
 //                                    request.args.get('saturday')])
 
-
-
-
-
-			
-		
 //		
 //	} catch (Exception e) {
 //	}

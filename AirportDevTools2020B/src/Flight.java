@@ -14,6 +14,8 @@ public class Flight implements Cloneable{
 	protected String depTime;
 	protected String arrTime;
 	protected int flag;
+	protected String country;
+	protected String city;
 
 	// -> new -> Incoming Flight Constructor //
 	public Flight(String brand, MyDate date, String depTime, String arrTime, String flightId, int terminal, int flag) {
@@ -68,17 +70,10 @@ public class Flight implements Cloneable{
 		return flag;
 	}
 	public String getCountry() {
-		
-		if(this.arriveAirPort.contains("Israel"))
-			return this.depAirPort;
-		else
-			return this.arriveAirPort;
+		return this.country;
 	}
 	public String getCity() {
-		if(this.arriveAirPort.contains("Tel"))
-			return this.depAirPort;
-		else
-			return this.arriveAirPort;
+		return this.city;
 	}
 
 	public String getAirport() {
@@ -161,6 +156,26 @@ public class Flight implements Cloneable{
 	public String getDayInWeek() {
 		LocalDate me = LocalDate.of(date.getYear(), date.getMonth(), date.getDay());
 		return me.getDayOfWeek().toString();
+	}
+	
+	public void setCity(String city1) {
+		this.city=city1;
+	}
+	public void setCountry(String country1)
+	{
+		this.country=country1;
+	}
+	
+	
+	public static String[] splitAirport(String airportStr) {
+		String[] countrY1 = airportStr.split(",");
+		String[] citY0 = countrY1[0].split(" ");
+//		setCountry(split1[1]);
+//		setCity(split2[0]);
+		String[] returnMe= {citY0[0],countrY1[1]};
+		
+				
+		return returnMe;
 	}
 
 }
