@@ -14,6 +14,7 @@ public class AirPortBoard {
 	private static List<Flight> flightsOutBoard = new ArrayList<>();
 	public static Massageable ui;
 	private static FilterFlights filtered;
+	
 	// Args: 
 	// 0 - User Interface kind
 	// 1 - departures or Arrivials
@@ -42,7 +43,7 @@ public class AirPortBoard {
 			Program.loadFromFile(allFlights, flightsInBoard, flightsOutBoard); // load all flights from file
 
 		} catch (Exception e) {
-			System.err.println("Error! can't load flights from data base. Try Again!");
+			ui.showErrMassage("Error! can't load flights from data base. Try Again!");
 			e.printStackTrace();
 			exit();
 		}
@@ -89,30 +90,26 @@ public class AirPortBoard {
 		// 5 - Starting Date
 		if (args[5].length()!=0)
 		{
-//			String[] splitAirport = args[2].split(",");
-//			for (String a:splitAirport) {
-//				filtered.filterByAirlineAirport(a);	
-//			}
 			filtered.filterByAirlineAirport(args[5]);	
 			
 		}
 		// 6 - Ending Date
 		if (args[6].length()!=0)
 		{
-			String[] splitAirport = args[2].split(",");
-			for (String a:splitAirport) {
-				filtered.filterByAirlineAirport(a);	
-			}
-			
+			filtered.filterByAirlineAirport(args[6]);	
+			// TODO add ending time of flight 
+			// with term like so: 
+			// if(departure time+ flight time > 24) 
+			// 		landing date = departureDate+1;
+			// remember to change days in weeks accordingly
 			
 		}
 		
 		// 7 - week Days
 		if (args[7].length()!=0)
 		{
-		args[7].toCharArray();
-		
-			
+			filtered.toggleIntDaysInWeekFromStr(args[7]);
+			filtered.filterByDateWeekDay();
 		}
 
 

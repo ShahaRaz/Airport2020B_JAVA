@@ -4,6 +4,9 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.Scanner;
 
+import interfaces.Massageable;
+import interfaces.consoleUI;
+
 public class MyDate {
 	public static enum monthName {
 		Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec
@@ -16,6 +19,8 @@ public class MyDate {
 	private int month;
 	private int year;
 	private final static int[] DAYS_MONTHS = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+	public static Massageable ui = new consoleUI();
+
 
 
 	public int getFirstDayInMyWeek() {
@@ -156,5 +161,23 @@ public class MyDate {
 			return true;
 		return false;
 	}
-
+	
+	public static MyDate ParseFromString(String date) {
+		//format: DD/MM/YYYY
+		String[] splitToFields = date.split("/");
+		int day = Integer.parseInt(splitToFields[0]);
+		int month = Integer.parseInt(splitToFields[1]);
+		int year = Integer.parseInt(splitToFields[2]);
+		return new MyDate(day, month, year);
+	}
+	public static MyDate getDateFromUser(Scanner scn) {
+		ui.showMassage("enter date 'day' 'month' 'year' (example :23 06 1994)");
+		int day = scn.nextInt();
+		int month = scn.nextInt();
+		int year = scn.nextInt();
+		scn.nextLine(); // clear buffer
+		return new MyDate(day, month, year);
+	}
 }
+
+

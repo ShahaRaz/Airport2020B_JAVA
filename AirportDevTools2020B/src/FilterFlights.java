@@ -76,9 +76,9 @@ public class FilterFlights {
 				case "5": 
 					ui.showMassage("Searching by date range:");
 					ui.showMassage("What is the first date in range?");
-					firstDateInRange = getDateFromUser(scn);
+					firstDateInRange = MyDate.getDateFromUser(scn);
 					ui.showMassage("What is the last date in range?");
-					lastDateInRange = getDateFromUser(scn);
+					lastDateInRange = MyDate.getDateFromUser(scn);
 					filterByDateRange(firstDateInRange, lastDateInRange);
 					break;
 				case "6":
@@ -86,7 +86,7 @@ public class FilterFlights {
 					ui.showMassage("Which Day in the Week you Prefer?");
 					// filter by me
 					ChooseDaysInWeek(scn);
-					filterByDateWeekDay(weekDays);
+					filterByDateWeekDay();
 
 					break;
 				default:
@@ -122,7 +122,8 @@ public class FilterFlights {
 		ui.showMassage(" 6) Week Days");
 	}
 
-	public void filterByDateWeekDay(boolean[] weekSundaysIndexIs0) {
+	public void filterByDateWeekDay() {
+		//using an external array INORDER to enable accessing 
 		Iterator<Flight> itr = filteredArr.iterator();
 		Flight f;
 		int temp;
@@ -135,24 +136,28 @@ public class FilterFlights {
 		//
 	}
 	
-	public void filterByIntDaysInWeek(String daysAsInts) {
-//		Character temp = daysAsInts.toCharArray();
-//		int[] myIntArray = {0, 1, 2 ,3 ,4 ,5 , 6 };
-//		int temp
-//		for(int i=0;i<7;i++) {
-//			for(int j=0;j<daysAsInts.length();j++)
-//				if(Integer.parseInt(daysAsInts.charAt(j))==i)
-//					weekDays[i]=true;
-//					
-			}
-		//TODO
-//https://stackoverflow.com/questions/5162221/how-do-i-extract-a-single-digit-from-a-string-of-digits	
+	public void toggleIntDaysInWeekFromStr(String daysAsInts) {
+		int temp; // temporary
+		for(int i=0;i<daysAsInts.length();i++) {
+			temp=daysAsInts.charAt(i)-'0'; // temporary = the day specified in index i in the string
+			weekDays[temp]=true;
+		}
+		
+	}
+	public void parseDatesFromStringNFilter(String dates) {
+		// expected format: "DD/MM/YYYY & DD/MM/YYYY"
+		String[] splitDates = dates.split("&");
+		for (String d:splitDates)
+			d.trim(); // removes white spaces
+		MyDate firstDay = MyDate.ParseFromString(splitDates[0]);
+		MyDate lastDay =  MyDate.ParseFromString(splitDates[1]);
+		filterByDateRange(firstDay,lastDay);
+		//splitDates[0] = //... look maybe MyDate class has a way
 		
 		
 		
-		
+	}
 	
-
 	public void filterByDateRange(MyDate FromDate, MyDate toDate) {
 		Iterator<Flight> itr = filteredArr.iterator();
 		Flight f;
@@ -243,16 +248,9 @@ public class FilterFlights {
 	protected List<Flight> getList() {
 		return this.filteredArr;
 	}
-
-	public static MyDate getDateFromUser(Scanner scn) {
-		ui.showMassage("enter date 'day' 'month' 'year' (example :23 06 1994)");
-		int day = scn.nextInt();
-		int month = scn.nextInt();
-		int year = scn.nextInt();
-		scn.nextLine(); // clear buffer
-		return new MyDate(day, month, year);
-	}
 }
+
+
 
 
 
