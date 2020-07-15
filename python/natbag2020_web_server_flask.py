@@ -6,7 +6,7 @@ from flask import Flask, request
 app = Flask(__name__)
 setDir = '/Users/SRazStudent/git/Airport2020B_JAVA/AirportDevTools2020B/src'
 terminalCompile = '-d build -cp ./jars/*.jar *.java'
-terminalRun = 'java -cp ./build:./jars/AirportDev14July.jar AirPortBoard'
+terminalRun = 'java -cp ./build:./jars/AirportDev14July.jar AirportActivition'
 #proc = subprocess.Popen(terminalCompile,terminalRun,shell=True,cwd = setDir)
 
 proc = subprocess.Popen(terminalCompile,shell=True,cwd=setDir)
@@ -50,7 +50,7 @@ def printcheck():
 @app.route("/departures")
 def dep():
     return subprocess.check_output(['java', '-cp ./build:./jars/AirportDev14July.jar AirPortBoard', "-classpath",
-                                    "/Users/SRazStudent/git/Airport2020B_JAVA/AirportDevTools2020B/src/bin", "AirPortBoard",
+                                    "/Users/SRazStudent/git/Airport2020B_JAVA/AirportDevTools2020B/src/bin", "AirportActivition",
                                     request.args.get('outFormat'), "departures", # args[0] + args[1]
                                     request.args.get('airline'), request.args.get('country'),# args[2] + args[3]
                                     request.args.get('city'), request.args.get('airport')])# args[4] + args[5]
@@ -67,7 +67,7 @@ def dep():
 @app.route("/arrivals")
 def arr():
     return subprocess.check_output(["java", "-classpath",
-                                    "/Users/SRazStudent/git/Airport2020B_JAVA/AirportDevTools2020B/src/bin", "AirPortBoard",
+                                    "/Users/SRazStudent/git/Airport2020B_JAVA/AirportDevTools2020B/src/bin", "AirportActivition",
                                     request.args.get('outformat'), "arrivals",# args[0] + args[1]
                                     request.args.get('airline'), request.args.get('country'),# args[2] + args[3]
                                     request.args.get('city'), request.args.get('airport'),# args[4] + args[5]

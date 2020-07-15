@@ -127,10 +127,10 @@ public class Flight implements Cloneable{
 		this.arrTime = setAnyTime(arrTime);
 	}
 
-	@Override
-	public String toString() {
-		return "Brand: " + brand;
-	}
+//	@Override
+//	public String toString() {
+//		return "Brand: " + brand;
+//	}
 
 	// Helpful Methods //
 	public static double timeStrToDouble(String time) {
@@ -179,8 +179,7 @@ public class Flight implements Cloneable{
 	}
 
 	public void toStringServer() {
-		
-		
+		StringBuffer sb = new StringBuffer();		
 //		# 									  request.args.get('outformat'), "arrivals",
 //		#                                     request.args.get('airline'), request.args.get('country'),
 //		#                                     request.args.get('city'), request.args.get('airport'),

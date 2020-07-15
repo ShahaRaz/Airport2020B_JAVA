@@ -31,6 +31,7 @@ public class FilterFlights {
 		originalFlights.addAll(flightsBeforeFiltering);
 		filteredArr = new ArrayList<Flight>();
 		filteredArr.addAll(flightsBeforeFiltering);
+		
 		this.brands = BrandsInDB;
 		
 	}

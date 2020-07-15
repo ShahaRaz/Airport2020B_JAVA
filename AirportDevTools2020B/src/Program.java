@@ -190,9 +190,9 @@ public class Program {
 				terminalNum1 = Integer.parseInt(raf.readUTF());
 				flag1 = Integer.parseInt(raf.readUTF());
 				if (flag1 == 1)
-					allFlights.add(new FlightIn(brand1, depAirPort1, date, depTime1, arrTime1, flightId1, terminalNum1, 1));
+					allFlights1.add(new FlightIn(brand1, depAirPort1, date, depTime1, arrTime1, flightId1, terminalNum1, 1));
 				else
-					allFlights
+					allFlights1
 							.add(new FlightOut(brand1, arriveAirPort1, date, depTime1, arrTime1, flightId1, terminalNum1, 2));
 
 				spreadFlights(allFlights1,flightsIn1,flightsOut1);
@@ -404,6 +404,12 @@ public class Program {
 		ui.showMassage("Flights Out:");
 		for (Flight f : l) {
 			if (f.getFlag() == 2)
+				ui.showMassage(f.toString());
+		}
+	}
+	public static void simpleMiniShowFlights(List<Flight> l) {
+		ui.showMassage("Flights:");
+		for (Flight f : l) {
 				ui.showMassage(f.toString());
 		}
 	}
