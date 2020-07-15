@@ -1,24 +1,24 @@
 package interfaces;
 
 public class htmlUI implements Massageable{
-
 	@Override
 	public void showMassage(String msg) {
-		// TODO Auto-generated method stub
-		
+		System.out.println(msg + "<br>");
 	}
 
 	@Override
 	public String getString(String msg) {
-		// TODO Auto-generated method stub
+		System.out.println(msg + "<br>");
+		
 		return null;
 	}
 
 	@Override
 	public void showErrMassage(String string) {
 		// TODO Auto-generated method stub
-		
+		System.out.println("<p style=\" color:red>\">This is a paragraph.</p>" + "<br>");
 	} 
 	
+	//<p style="color:red">This is a paragraph.</p>
 
 }

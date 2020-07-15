@@ -31,8 +31,8 @@ public class FilterFlights {
 		originalFlights.addAll(flightsBeforeFiltering);
 		filteredArr = new ArrayList<Flight>();
 		filteredArr.addAll(flightsBeforeFiltering);
-
 		this.brands = BrandsInDB;
+		
 	}
 
 	public List<Flight> filterByTerms() {
@@ -247,6 +247,13 @@ public class FilterFlights {
 
 	protected List<Flight> getList() {
 		return this.filteredArr;
+	}
+
+	public String toStringServer() {
+		for(Flight f:filteredArr) {
+			f.toStringServer();
+		}
+		return null;
 	}
 }
 
