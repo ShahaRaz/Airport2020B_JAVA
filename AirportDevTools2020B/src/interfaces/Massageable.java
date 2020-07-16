@@ -5,4 +5,5 @@ public interface Massageable {
 	String getString(String msg);
 	void showErrMassage(String string);
 	String dropLineChar();
+	
 }

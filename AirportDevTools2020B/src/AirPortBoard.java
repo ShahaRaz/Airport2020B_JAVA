@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import interfaces.Massageable;
+import interfaces.SilentUi;
 import interfaces.consoleUI;
 import interfaces.htmlUI;
 
@@ -13,6 +14,7 @@ public class AirPortBoard {
 	private List<Flight> flightsInBoard = new ArrayList<>();
 	private List<Flight> flightsOutBoard = new ArrayList<>();
 	public Massageable ui = new consoleUI();
+	private Massageable devUi = new SilentUi();
 	private FilterFlights filtered;
 	private  MyDate LAST_DAY_IN_BOARD = new MyDate(1, 1, 2100); 
 	private  MyDate FIRST_DAY_IN_BOARD = new MyDate(1,1,2020);
@@ -39,27 +41,27 @@ public class AirPortBoard {
 	
 
 	void AirportActivition(String[] args) {
-		ui.showMassage("entered JAVA program!");
+		devUi.showErrMassage("entered JAVA program!");
 		int i = 0;
 		for (String s : args) {
 			i++;
-			System.out.println(s);
+			devUi.showMassage((s));
 		}
-		System.out.println(args);
-		ui.showMassage("java recived :" + args.length + " && arguments" + " Number of strings: " + i);
+		devUi.showMassage(args.toString());
+		devUi.showErrMassage("java recived :" + args.length + " && arguments" + " Number of strings: " + i);
 		if (args.length == 0) {
-			ui.showMassage("Expected values: ui kind + dep/arr + airline brand + country + airport + Take off date "
+			devUi.showErrMassage("Expected values: ui kind + dep/arr + airline brand + country + airport + Take off date "
 					+ "landing date + weekDays[1sunday->7]");
 			ui.showErrMassage("no args, Exiting");
 			exit();
 		}
 		if (args[0].contains("html")) {
 			ui = new htmlUI(); // overWrites the console ui
-			ui.showMassage("html it is");
+			devUi.showErrMassage("html it is");
 		} else if (args[0].contains("console"))
-			ui.showMassage("console it is");
+			devUi.showErrMassage("console it is");
 		else {
-			ui.showMassage("first arg must be ui type (html or console)");
+			devUi.showErrMassage("first arg must be ui type (html or console)");
 			exit();
 		}
 		
@@ -84,15 +86,15 @@ public class AirPortBoard {
 
 		
 		// 2 - airline brand__________________________________________________
-		System.out.println("args[2]: " + args[2]);
+		devUi.showMassage("args[2]: " + args[2]);
 		if (args[2].length() != 0) {
 			filtered.filterByAirlineBrand(args[2]);
 		}
-		System.out.println("filtered stage 2");
-		ui.showMassage(filtered.toStringServer(ui.dropLineChar()));
+		devUi.showMassage("filtered stage 2");
+		devUi.showErrMassage(filtered.toStringServer(ui.dropLineChar()));
 		
 		// 3 - country__________________________________________________
-		System.out.println("args[3]: " + args[3]);
+		devUi.showMassage("args[3]: " + args[3]);
 		if (args[3].length() != 0) {
 //			String[] splitCountry = args[2].split(",");
 //			for (String c:splitCountry) {
@@ -101,40 +103,40 @@ public class AirPortBoard {
 			filtered.filterByAirlineCountry(args[3]);
 
 		}
-		System.out.println("filtered stage 3");
-		ui.showMassage(filtered.toStringServer(ui.dropLineChar()));
+		devUi.showMassage("filtered stage 3");
+		devUi.showErrMassage(filtered.toStringServer(ui.dropLineChar()));
 		
 		
 		// 4 - City__________________________________________________
-		System.out.println("args[4]: " + args[4]);
+		devUi.showMassage("args[4]: " + args[4]);
 		if (args[4].length() != 0) {
 			filtered.filterByAirlineCity(args[4]);
 		}
-		System.out.println("filtered stage 4");
-		ui.showMassage(filtered.toStringServer(ui.dropLineChar()));
+		devUi.showMassage("filtered stage 4");
+		devUi.showErrMassage(filtered.toStringServer(ui.dropLineChar()));
 		
 		
 
 		// 5 - Airport__________________________________________________
-		System.out.println("args[5]: " + args[5]);
+		devUi.showMassage("args[5]: " + args[5]);
 		if (args[5].length() != 0) {
 			filtered.filterByAirlineAirport(args[5]);
 		}
-		System.out.println("filtered stage 5");
-		ui.showMassage(filtered.toStringServer(ui.dropLineChar()));
+		devUi.showMassage("filtered stage 5");
+		devUi.showErrMassage(filtered.toStringServer(ui.dropLineChar()));
 		
 		
 		// 6 - Starting Date__________________________________________________
-		System.out.println("args[6]: " + args[6]);
+		devUi.showMassage("args[6]: " + args[6]);
 		if (args[6].length() != 0) {
 			filtered.filterByDateRange(MyDate.ParseFromString(args[6]), LAST_DAY_IN_BOARD);
 		}
-		System.out.println("filtered stage 6");
-		ui.showMassage(filtered.toStringServer(ui.dropLineChar()));
+		devUi.showMassage("filtered stage 6");
+		devUi.showErrMassage(filtered.toStringServer(ui.dropLineChar()));
 		
 		
 		// 7 - Ending Date__________________________________________________
-		System.out.println("args[7]: " + args[7]);
+		devUi.showMassage("args[7]: " + args[7]);
 		if (args[7].length() != 0) {
 			filtered.filterByDateRange(FIRST_DAY_IN_BOARD,MyDate.ParseFromString(args[7]));
 			// TODO add ending time of flight
@@ -146,11 +148,11 @@ public class AirPortBoard {
 			// if(departure time < takeOff time) day++
 		}
 		
-		System.out.println("filtered stage 7");
-		ui.showMassage(filtered.toStringServer(ui.dropLineChar()));
+		devUi.showErrMassage("filtered stage 7");
+		devUi.showErrMassage(filtered.toStringServer(ui.dropLineChar()));
 
 		// 8 - week Days__________________________________________________
-		System.out.println("args[8]: " + args[8]);
+		devUi.showMassage("args[8]: " + args[8]);
 		if (args[8].length() != 0) {
 			filtered.toggleIntDaysInWeekFromStr(args[8]);
 			filtered.filterByDateWeekDay();
@@ -211,22 +213,22 @@ public class AirPortBoard {
 //	MyDate endingDate = null;
 //	String weekDays = "";
 //	
-//	System.out.println("Which Air-Line Brand? (1-" + (brands.size() + 1) + ")");
+//	devUi.showMassage("Which Air-Line Brand? (1-" + (brands.size() + 1) + ")");
 //	int i = 0;
-//	System.out.println(i + ") Any Flight Company...");
+//	devUi.showMassage(i + ") Any Flight Company...");
 //	
 //	for (String s : brands)
-//		System.out.println(++i + ") " + s);
-//	System.out.println(++i + ") Other brands");
+//		devUi.showMassage(++i + ") " + s);
+//	devUi.showMassage(++i + ") Other brands");
 //	try {
 //		i = Integer.parseInt(scn.nextLine());
 //	} catch (Exception e) {
-//		System.out.println("Invalid Input... Try again!");
+//		devUi.showMassage("Invalid Input... Try again!");
 //		i = Integer.parseInt(scn.nextLine());
 //	}
 //	
 //	if (i == 5) {
-//		System.out.println("Whitch Flight Company?");
+//		devUi.showMassage("Whitch Flight Company?");
 //		brand = scn.nextLine();
 //		
 //	} else if (i == 0)
@@ -234,14 +236,14 @@ public class AirPortBoard {
 //	else if (i < 5 && i > 0)
 //		brand = brands.get(i - 1);
 //	else
-//		System.out.println("No Company Chosen...");
-//	System.out.println("Which Country?");
+//		devUi.showMassage("No Company Chosen...");
+//	devUi.showMassage("Which Country?");
 //	country = scn.nextLine();
-//	System.out.println("Which City?");
+//	devUi.showMassage("Which City?");
 //	city = scn.nextLine();
-//	System.out.println("Which Air-Port?");
+//	devUi.showMassage("Which Air-Port?");
 //	airport = scn.nextLine();
-//	System.out.println("What is the Starting Date?");
+//	devUi.showMassage("What is the Starting Date?");
 //	try {
 //		System.out.print("Insert a day: ");
 //		int days = Integer.parseInt(scn.nextLine());
@@ -251,10 +253,10 @@ public class AirPortBoard {
 //		int year = Integer.parseInt(scn.nextLine());
 //		startDate = new MyDate(days, mos, year);
 //	} catch (Exception e) {
-//		System.out.println("Didnt Work Out");
+//		devUi.showMassage("Didnt Work Out");
 //		startDate = new MyDate(1, 1, 1990);
 //	}
-//	System.out.println("What is the Ending Date?");
+//	devUi.showMassage("What is the Ending Date?");
 //	try {
 //		System.out.print("Insert a day: ");
 //		int days = Integer.parseInt(scn.nextLine());
@@ -264,30 +266,30 @@ public class AirPortBoard {
 //		int year = Integer.parseInt(scn.nextLine());
 //		endingDate = new MyDate(days, mos, year);
 //	} catch (Exception e) {
-//		System.out.println("Didnt Work Out");
+//		devUi.showMassage("Didnt Work Out");
 //		endingDate = new MyDate(30, 12, 2050);
 //	}
 //	// String => Sunday Friday Monday <= String//
 //	try {
-//		System.out.println("Which Day in the Week you Prefer?");
+//		devUi.showMassage("Which Day in the Week you Prefer?");
 //		weekDays += scn.nextLine() + " ";
 //		
 //		while (true) {
-//			System.out.println("Any other day?");
-//			System.out.println("1) yes\n2) no");
+//			devUi.showMassage("Any other day?");
+//			devUi.showMassage("1) yes\n2) no");
 //			String res = scn.nextLine();
 //			if (res.compareTo("1") == 0) {
-//				System.out.println("which day you prefer?");
+//				devUi.showMassage("which day you prefer?");
 //				weekDays += scn.nextLine() + " ";
 //			} else if (res.compareTo("2") == 0) {
-//				System.out.println("OK, Lets go forward...");
+//				devUi.showMassage("OK, Lets go forward...");
 //				break;
 //			} else {
-//				System.out.println("Invalid input, Lets go forward...");
+//				devUi.showMassage("Invalid input, Lets go forward...");
 //				break;
 //			}
 //		}
-//		System.out.println("Error! Going 1 By-Defualt");
+//		devUi.showMassage("Error! Going 1 By-Defualt");
 //	}
 //	int counter = 0;
 //	for (Flight f : arr) {
@@ -302,7 +304,7 @@ public class AirPortBoard {
 //		}
 //	}
 //	if (counter == 0)
-//		System.out.println("No Match Found");
+//		devUi.showMassage("No Match Found");
 //	return l;
 //
 //	

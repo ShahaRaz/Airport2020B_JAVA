@@ -21,7 +21,8 @@ public class consoleUI implements Massageable{
 
 	@Override
 	public String dropLineChar() {
-		return "<br>";
+		return "\n";
 	}
+
 
 }

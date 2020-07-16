@@ -23,7 +23,9 @@ public class htmlUI implements Massageable{
 	public String dropLineChar() {
 		
 		return "<br>\n"; // delete \n later 
-	} 
+	}
+
+
 	
 	//<p style="color:red">This is a paragraph.</p>
 

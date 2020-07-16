@@ -319,13 +319,15 @@ public class Program {
 		isIncomingFlight1 = (int) (1 + Math.random() * 2);
 		Collections.shuffle(airPorts);
 		int size = airPorts.size() - 1;
-		int p = (int) (Math.random() * size);
+		String randAirport = airPorts.get((int) (Math.random() * size));
+		String randBrand = brands.get((int)(Math.random()*brands.size()));
+		
 		if (isIncomingFlight1 == 1)
-			allFlights.add(new FlightIn(brands.get((int) (Math.random() * 4)), airPorts.get(p),
+			allFlights.add(new FlightIn(randBrand,randAirport,
 					new MyDate(day, mons, 2020), hrsOut + ":" + minOut, hrsIn + ":" + minIn,
 					(100 + Math.random() * 5) + "", (int) (1 + Math.random() * 3), true));
 		else
-			allFlights.add(new FlightOut(brands.get((int) (Math.random() * 4)), airPorts.get(p),
+			allFlights.add(new FlightOut(randBrand, randAirport,
 					new MyDate(day, mons, 2020), hrsOut + ":" + minOut, hrsIn + ":" + minIn,
 					(100 + Math.random() * 5) + "", (int) (1 + Math.random() * 3), false));
 
