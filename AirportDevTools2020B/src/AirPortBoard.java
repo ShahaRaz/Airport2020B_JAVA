@@ -14,6 +14,8 @@ public class AirPortBoard {
 	private List<Flight> flightsOutBoard = new ArrayList<>();
 	public Massageable ui = new consoleUI();
 	private FilterFlights filtered;
+	private  MyDate LAST_DAY_IN_BOARD = new MyDate(1, 1, 2100); 
+	private  MyDate FIRST_DAY_IN_BOARD = new MyDate(1,1,2020);
 
 	// Args:
 	// 0 - User Interface kind
@@ -31,7 +33,6 @@ public class AirPortBoard {
 	
 	
 	public AirPortBoard(String[] args) {
-		super();
 		AirportActivition(args);
 	}
 
@@ -52,16 +53,16 @@ public class AirPortBoard {
 			ui.showErrMassage("no args, Exiting");
 			exit();
 		}
-		if (args[0] == "html") {
-			ui = new htmlUI();
+		if (args[0].contains("html")) {
+			ui = new htmlUI(); // overWrites the console ui
 			ui.showMassage("html it is");
-		} else if (args[0] == "console")
+		} else if (args[0].contains("console"))
 			ui.showMassage("console it is");
 		else {
 			ui.showMassage("first arg must be ui type (html or console)");
 			exit();
 		}
-
+		
 		try {
 			Program.loadFromFile(this.allFlights, this.flightsInBoard, this.flightsOutBoard); // load all flights from file
 
@@ -70,30 +71,28 @@ public class AirPortBoard {
 			e.printStackTrace();
 			exit();
 		}
-		// 1 Depar / Arrivial
+
+		// 1 Departure / Arriviall__________________________________________________
 		if (args[1].contains("dep")) {
 			Program.simpleMiniShowFlights(flightsOutBoard);
 			filtered = new FilterFlights(flightsOutBoard, null);
 		}
 		if (args[1].contains("arr")) {
-			Program.simpleMiniShowFlights(flightsInBoard);
+		//	Program.simpleMiniShowFlights(flightsInBoard);
 			filtered = new FilterFlights(flightsOutBoard, null);
-
 		}
-		// 2 - airline brand
+
+		
+		// 2 - airline brand__________________________________________________
 		System.out.println("args[2]: " + args[2]);
-		String temp = args[2].trim();
 		if (args[2].length() != 0) {
-//			String[] splitBrands = args[2].split(",");
-//			for (String b:splitBrands) {
-//				filtered.filterByAirlineBrand(b);	
-//			}
-
-			filtered.filterByAirlineBrand(temp);
-
+			filtered.filterByAirlineBrand(args[2]);
 		}
-
-		// 3 - country
+		System.out.println("filtered stage 2");
+		ui.showMassage(filtered.toStringServer(ui.dropLineChar()));
+		
+		// 3 - country__________________________________________________
+		System.out.println("args[3]: " + args[3]);
 		if (args[3].length() != 0) {
 //			String[] splitCountry = args[2].split(",");
 //			for (String c:splitCountry) {
@@ -102,44 +101,64 @@ public class AirPortBoard {
 			filtered.filterByAirlineCountry(args[3]);
 
 		}
-		// 4 - City
+		System.out.println("filtered stage 3");
+		ui.showMassage(filtered.toStringServer(ui.dropLineChar()));
+		
+		
+		// 4 - City__________________________________________________
+		System.out.println("args[4]: " + args[4]);
 		if (args[4].length() != 0) {
 			filtered.filterByAirlineCity(args[4]);
 		}
+		System.out.println("filtered stage 4");
+		ui.showMassage(filtered.toStringServer(ui.dropLineChar()));
+		
+		
 
-		// 5 - Airport
+		// 5 - Airport__________________________________________________
+		System.out.println("args[5]: " + args[5]);
 		if (args[5].length() != 0) {
-//			String[] splitAirport = args[2].split(",");
-//			for (String a:splitAirport) {
-//				filtered.filterByAirlineAirport(a);	
-//			}
 			filtered.filterByAirlineAirport(args[5]);
-
 		}
-		// 6 - Starting Date
+		System.out.println("filtered stage 5");
+		ui.showMassage(filtered.toStringServer(ui.dropLineChar()));
+		
+		
+		// 6 - Starting Date__________________________________________________
+		System.out.println("args[6]: " + args[6]);
 		if (args[6].length() != 0) {
-			filtered.filterByAirlineAirport(args[6]);
-
+			filtered.filterByDateRange(MyDate.ParseFromString(args[6]), LAST_DAY_IN_BOARD);
 		}
-		// 7 - Ending Date
+		System.out.println("filtered stage 6");
+		ui.showMassage(filtered.toStringServer(ui.dropLineChar()));
+		
+		
+		// 7 - Ending Date__________________________________________________
+		System.out.println("args[7]: " + args[7]);
 		if (args[7].length() != 0) {
-			filtered.filterByAirlineAirport(args[7]);
+			filtered.filterByDateRange(FIRST_DAY_IN_BOARD,MyDate.ParseFromString(args[7]));
 			// TODO add ending time of flight
 			// with term like so:
 			// if(departure time+ flight time > 24)
 			// landing date = departureDate+1;
 			// remember to change days in weeks accordingly
-
+			///ORRR
+			// if(departure time < takeOff time) day++
 		}
+		
+		System.out.println("filtered stage 7");
+		ui.showMassage(filtered.toStringServer(ui.dropLineChar()));
 
-		// 8 - week Days
+		// 8 - week Days__________________________________________________
+		System.out.println("args[8]: " + args[8]);
 		if (args[8].length() != 0) {
 			filtered.toggleIntDaysInWeekFromStr(args[8]);
 			filtered.filterByDateWeekDay();
 		}
 
 		// printOut
-		ui.showMassage(filtered.toStringServer());
+		ui.showErrMassage("Results are:");
+		ui.showMassage(filtered.toStringServer(ui.dropLineChar()));
 
 	}
 
@@ -147,6 +166,7 @@ public class AirPortBoard {
 	private void exit() {
 		ui.showMassage("Goodbye");
 	}
+	
 
 }
 

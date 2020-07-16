@@ -3,10 +3,10 @@ public class FlightIn extends Flight implements Cloneable {
 	private String depCity;
 
 	public FlightIn(String brand, String depAirPort, MyDate date, String depTime, String arrTime, String flightId,
-			int terminal, int flag) {
-		super(brand, date, depTime, arrTime, flightId, terminal, flag);
+			int terminal, boolean isIncomingFlight) {
+		super(brand, date, depTime, arrTime, flightId, terminal, isIncomingFlight);
 		setDepAirPort(depAirPort);
-		String[] airportSplit = depAirPort.split(",");
+		String[] airportSplit = splitAirport(depAirPort);
 		setCity(airportSplit[0]);
 		setCountry(airportSplit[1]);
 		setArriveAirPort("Ben-Gurion, TLV");

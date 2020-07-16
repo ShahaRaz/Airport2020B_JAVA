@@ -2,6 +2,7 @@
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.Scanner;
 
 import interfaces.Massageable;
@@ -22,18 +23,19 @@ public class MyDate {
 	public static Massageable ui = new consoleUI();
 
 
-
-	public int getFirstDayInMyWeek() {
-		LocalDate me = LocalDate.of(this.year, this.month, this.day-7);
-		me = me.with(DayOfWeek.SUNDAY);
-		return me.getDayOfMonth();
-	}
 	
-	public int getDayInWeekSundayInIndex0() {
-		//TODO check if works
-		int monthDay=this.getFirstDayInMyWeek();
-		return (this.month-monthDay);
-		
+	public long getDayInWeekSundayInIndex0() {
+		LocalDate sunDay = LocalDate.of(this.year, this.month, this.day).with(DayOfWeek.SUNDAY);
+		sunDay = sunDay.minusDays(7);
+		LocalDate mine = LocalDate.of(year, month, day);
+		long almostDone = 	ChronoUnit.DAYS.between(sunDay, mine);
+		if(almostDone==7)
+			return 0;
+		return almostDone;
+//		long sundayBased = mondayBased+1;
+//		if(sundayBased == -1)
+//			return 0;
+//		return sundayBased;
 	}
 
 	public MyDate(int day, int month, int year) {

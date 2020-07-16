@@ -30,7 +30,7 @@ public class Program {
 //	public static String brand;
 //	public static int terminalNum;
 //	public static MyDate date = null;
-//	public static int flag;
+//	public static int isIncomingFlight;
 	// MY LISTS //
 	public static List<String> brands = new ArrayList<>();
 	public static List<Flight> allFlights = new ArrayList<>();
@@ -84,7 +84,9 @@ public class Program {
 				
 				switch (userChoice) {
 				case "1":
-					AutoAdd();
+					for(int i=0;i<100;i++) { // add 100
+						AutoAdd();
+					}
 					ui.showMassage("Flight has been added Successfully");
 					isOK = false;
 					break;
@@ -161,7 +163,7 @@ public class Program {
 				raf.writeUTF(f.getArrTime());
 				raf.writeUTF(f.getFlightId());
 				raf.writeUTF(f.getTerminalNum() + "");
-				raf.writeUTF(f.getFlag() + "");
+				raf.writeUTF(f.getisIncomingFlight() + "");
 			}
 		}
 
@@ -175,7 +177,8 @@ public class Program {
 		flightsIn1.clear();
 		flightsOut1.clear();
 		String brand1,depAirPort1,arriveAirPort1,depTime1,arrTime1,flightId1;
-		int terminalNum1 , flag1;
+		int terminalNum1;
+		boolean isIncomingFlight1;
 		try (RandomAccessFile raf = new RandomAccessFile(FILE_NAME, "r")) {
 			while (raf.getFilePointer() < raf.length()) {
 				brand1 = raf.readUTF();
@@ -188,15 +191,15 @@ public class Program {
 				arrTime1 = raf.readUTF();
 				flightId1 = raf.readUTF();
 				terminalNum1 = Integer.parseInt(raf.readUTF());
-				flag1 = Integer.parseInt(raf.readUTF());
-				if (flag1 == 1)
-					allFlights1.add(new FlightIn(brand1, depAirPort1, date, depTime1, arrTime1, flightId1, terminalNum1, 1));
+				isIncomingFlight1 = Boolean.parseBoolean(raf.readUTF());
+				if (isIncomingFlight1 == true)
+					allFlights1.add(new FlightIn(brand1, depAirPort1, date, depTime1, arrTime1, flightId1, terminalNum1, true ));
 				else
 					allFlights1
-							.add(new FlightOut(brand1, arriveAirPort1, date, depTime1, arrTime1, flightId1, terminalNum1, 2));
-
-				spreadFlights(allFlights1,flightsIn1,flightsOut1);
+							.add(new FlightOut(brand1, arriveAirPort1, date, depTime1, arrTime1, flightId1, terminalNum1, false));
 			}
+				spreadFlights(allFlights1,flightsIn1,flightsOut1);
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -209,7 +212,7 @@ public class Program {
 		while (!isOK) {
 			String inout = scn.nextLine();
 			if (inout.compareTo("1") == 0 || inout.compareTo("2") == 0) {
-				pushFlight(inout);
+				addNewFlightManually(inout);
 				isOK = true;
 			} else
 				ui.showMassage("Wrong input");
@@ -307,30 +310,30 @@ public class Program {
 		int minOut = (int) (1 + Math.random() * 60);
 		int mons = (int) (1 + Math.random() * 12);
 		int day = (int) (1 + Math.random() * 28);
-		int flag1;
+		int isIncomingFlight1;
 
 		while (hrsOut - hrsIn >= 3) {
 			hrsIn = (int) (1 + Math.random() * 23);
 			hrsOut = (int) (1 + Math.random() * 23);
 		}
-		flag1 = (int) (1 + Math.random() * 2);
+		isIncomingFlight1 = (int) (1 + Math.random() * 2);
 		Collections.shuffle(airPorts);
 		int size = airPorts.size() - 1;
-		int p = (int) (1 + Math.random() * size);
-		if (flag1 == 1)
+		int p = (int) (Math.random() * size);
+		if (isIncomingFlight1 == 1)
 			allFlights.add(new FlightIn(brands.get((int) (Math.random() * 4)), airPorts.get(p),
 					new MyDate(day, mons, 2020), hrsOut + ":" + minOut, hrsIn + ":" + minIn,
-					(100 + Math.random() * 5) + "", (int) (1 + Math.random() * 3), flag1));
+					(100 + Math.random() * 5) + "", (int) (1 + Math.random() * 3), true));
 		else
 			allFlights.add(new FlightOut(brands.get((int) (Math.random() * 4)), airPorts.get(p),
 					new MyDate(day, mons, 2020), hrsOut + ":" + minOut, hrsIn + ":" + minIn,
-					(100 + Math.random() * 5) + "", (int) (1 + Math.random() * 3), flag1));
+					(100 + Math.random() * 5) + "", (int) (1 + Math.random() * 3), false));
 
 	}
 
 	// ask method for detail //
-	private static void pushFlight(String n) {
-		allFlights.add(askMe(n));
+	private static void addNewFlightManually(String n) {
+		allFlights.add(manually̧CreateFlight(n));
 	}
 	
 	public static MyDate getDateFromUser(Scanner scn) {
@@ -343,7 +346,7 @@ public class Program {
 	}
 
 
-	public static Flight askMe(String n) { // manual insertion of flight
+	public static Flight manually̧CreateFlight(String n) { // manual insertion of flight
 		String flightId;
 		String depAirPort;
 		String arriveAirPort;
@@ -365,12 +368,12 @@ public class Program {
 		if (n.equals("1")) { // -->> Flight In ///
 			System.out.print("Insert flight Departure Air-Port: ");
 			depAirPort = scn.nextLine();
-			return new FlightIn(brand, depAirPort, date, depTime, arrTime, flightId, terminalNum, 1);
+			return new FlightIn(brand, depAirPort, date, depTime, arrTime, flightId, terminalNum, true);
 		} else if (n.equals("2")) { // -->> flight out ///
 
 			System.out.print("Insert flight Arrival AirPort: ");
 			arriveAirPort = scn.nextLine();
-			return new FlightOut(brand, arriveAirPort, date, depTime, arrTime, flightId, terminalNum, 2);
+			return new FlightOut(brand, arriveAirPort, date, depTime, arrTime, flightId, terminalNum, false);
 		}
 
 		return null;
@@ -381,6 +384,9 @@ public class Program {
 		brands.add("El-Al");
 		brands.add("Israir");
 		brands.add("Wizz");
+		brands.add("American Airlines");
+		brands.add("Turkish Airlines");
+		
 	}
 
 	// Spreads Flights from AllFlights to FlightIn and FlightOut //
@@ -388,9 +394,9 @@ public class Program {
 	public static void spreadFlights(List<Flight> allFlights2,List<Flight> flightsIn2,
 			List<Flight> flightsOut2) {
 		for (Flight f : allFlights2) {
-			if (f.getFlag() == 1)
+			if (f.getisIncomingFlight() == true)
 				flightsIn2.add((FlightIn) f);
-			else // flag = 2
+			else // isIncomingFlight = 2
 				flightsOut2.add((FlightOut) f);
 		}
 	}
@@ -398,19 +404,20 @@ public class Program {
 	public static void miniShowFlights(List<Flight> l) {
 		ui.showMassage("Flights In:");
 		for (Flight f : l) {
-			if (f.getFlag() == 1)
+			if (f.getisIncomingFlight() == true)
 				ui.showMassage(f.toString());
 		}
 		ui.showMassage("Flights Out:");
 		for (Flight f : l) {
-			if (f.getFlag() == 2)
+			if (f.getisIncomingFlight() == false)
 				ui.showMassage(f.toString());
 		}
 	}
+	
 	public static void simpleMiniShowFlights(List<Flight> l) {
 		ui.showMassage("Flights:");
 		for (Flight f : l) {
-				ui.showMassage(f.toString());
+				ui.showMassage(f.toStringServer());
 		}
 	}
 	

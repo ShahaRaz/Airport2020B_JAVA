@@ -19,4 +19,9 @@ public class consoleUI implements Massageable{
 		System.err.println(msg);
 	}
 
+	@Override
+	public String dropLineChar() {
+		return "<br>";
+	}
+
 }

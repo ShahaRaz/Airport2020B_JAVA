@@ -13,19 +13,19 @@ public class Flight implements Cloneable{
 	protected String brand;
 	protected String depTime;
 	protected String arrTime;
-	protected int flag;
+	protected boolean isIncomingFlight;
 	protected String country;
 	protected String city;
 
 	// -> new -> Incoming Flight Constructor //
-	public Flight(String brand, MyDate date, String depTime, String arrTime, String flightId, int terminal, int flag) {
+	public Flight(String brand, MyDate date, String depTime, String arrTime, String flightId, int terminal, boolean isIncomingFlight) {
 		setBrand(brand);
 		setDate(date);
 		setDepTime(depTime);
 		setArrTime(arrTime);
 		setFlightId(flightId);
 		setTerminalNum(terminal);
-		setFlag(flag);
+		setisIncomingFlight(isIncomingFlight); // isIncomingFlight
 	}
 
 	// Getters //
@@ -66,8 +66,8 @@ public class Flight implements Cloneable{
 		return arrTime;
 	}
 
-	public int getFlag() {
-		return flag;
+	public boolean getisIncomingFlight() {
+		return isIncomingFlight;
 	}
 	public String getCountry() {
 		return this.country;
@@ -111,8 +111,8 @@ public class Flight implements Cloneable{
 		this.brand = brand;
 	}
 
-	public void setFlag(int flag) {
-		this.flag = flag;
+	public void setisIncomingFlight(boolean isIncomingFlight) {
+		this.isIncomingFlight = isIncomingFlight;
 	}
 
 	public void setArriveAirPort(String arriveAirPort) {
@@ -169,17 +169,18 @@ public class Flight implements Cloneable{
 	
 	public static String[] splitAirport(String airportStr) {
 		String[] countrY1 = airportStr.split(",");
-		String[] citY0 = countrY1[0].split(" ");
-//		setCountry(split1[1]);
-//		setCity(split2[0]);
-		String[] returnMe= {citY0[0],countrY1[1]};
+		String city = countrY1[0].substring(0,countrY1[0].length()-8); // -8 for deleting "Air-Port" 
+
+		String[] returnMe= {city,countrY1[1]};
 		
 				
 		return returnMe;
 	}
 
-	public void toStringServer() {
-		StringBuffer sb = new StringBuffer();		
+	public String toStringServer() {
+		return("airline=" + this.brand + " country=" +this.getCountry()+ " city=" +this.getCity()+ " airport=" +this.getAirport() +
+		" " + this.getDayInWeek().toString() +  " date=" +this.getDate().toString()+ " between: " + this.getDepTime() +  " -> " +this.getArrTime()) ;
+		
 //		# 									  request.args.get('outformat'), "arrivals",
 //		#                                     request.args.get('airline'), request.args.get('country'),
 //		#                                     request.args.get('city'), request.args.get('airport'),

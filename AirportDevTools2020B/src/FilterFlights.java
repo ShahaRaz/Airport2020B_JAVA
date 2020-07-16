@@ -22,7 +22,7 @@ public class FilterFlights {
 	private String fCity = "";
 	private String fAirport = "";
 	// max range
-	private MyDate firstDateInRange = new MyDate(1, 1, 1900);
+	private MyDate firstDateInRange = new MyDate(1, 1, 2020);
 	private MyDate lastDateInRange = new MyDate(1, 1, 2100);
 
 	public FilterFlights(List<Flight> flightsBeforeFiltering, List<String> BrandsInDB) {
@@ -31,7 +31,6 @@ public class FilterFlights {
 		originalFlights.addAll(flightsBeforeFiltering);
 		filteredArr = new ArrayList<Flight>();
 		filteredArr.addAll(flightsBeforeFiltering);
-		
 		this.brands = BrandsInDB;
 		
 	}
@@ -130,7 +129,7 @@ public class FilterFlights {
 		int temp;
 		while (itr.hasNext()) {
 			f = (Flight) itr.next();
-			temp = f.getDate().getDayInWeekSundayInIndex0();
+			temp = (int)f.getDate().getDayInWeekSundayInIndex0();
 			if (this.weekDays[temp] == false)
 				itr.remove();
 		}
@@ -141,6 +140,7 @@ public class FilterFlights {
 		int temp; // temporary
 		for(int i=0;i<daysAsInts.length();i++) {
 			temp=daysAsInts.charAt(i)-'0'; // temporary = the day specified in index i in the string
+			temp--; // index 0 for Sunday="1"
 			weekDays[temp]=true;
 		}
 		
@@ -162,10 +162,11 @@ public class FilterFlights {
 	public void filterByDateRange(MyDate FromDate, MyDate toDate) {
 		Iterator<Flight> itr = filteredArr.iterator();
 		Flight f;
+		MyDate flightDate;
 		while (itr.hasNext()) {
 			f = (Flight) itr.next();
-
-			if (!(f.getDate().before(toDate) && f.getDate().after(FromDate)))
+			flightDate=f.getDate();
+			if (!(flightDate.before(toDate) && flightDate.after(FromDate)))
 				itr.remove();
 		}
 		//
@@ -187,7 +188,7 @@ public class FilterFlights {
 		Flight f; // Temporary flight
 		while (itr.hasNext()) {
 			f = (Flight) itr.next();
-			if (!(Countries.contains(f.getCountry())))
+			if (!(Countries.contains(f.getCountry().trim())))
 				itr.remove();
 		}
 	}
@@ -197,7 +198,7 @@ public class FilterFlights {
 		Flight f; // Temporary flight
 		while (itr.hasNext()) {
 			f = (Flight) itr.next();
-			if (!(cities.contains(f.getCity())))
+			if (!(cities.contains(f.getCity().trim())))
 				itr.remove();
 		}
 	}
@@ -250,11 +251,13 @@ public class FilterFlights {
 		return this.filteredArr;
 	}
 
-	public String toStringServer() {
+	public String toStringServer(String uiDropLine) {
+		StringBuffer sb = new StringBuffer();
 		for(Flight f:filteredArr) {
-			f.toStringServer();
+			sb.append(f.toStringServer());
+			sb.append(uiDropLine);
 		}
-		return null;
+		return sb.toString();
 	}
 }
 
