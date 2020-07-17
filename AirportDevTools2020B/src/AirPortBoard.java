@@ -66,7 +66,8 @@ public class AirPortBoard {
 		}
 		
 		try {
-			Program.loadFromFile(this.allFlights, this.flightsInBoard, this.flightsOutBoard); // load all flights from file
+			Program.loadFromFile(allFlights, flightsInBoard, flightsOutBoard, FILE_NAME);
+
 
 		} catch (Exception e) {
 			ui.showErrMassage("Error! can't load flights from data base. Try Again!");
@@ -136,7 +137,7 @@ public class AirPortBoard {
 		
 		
 		// 7 - Ending Date__________________________________________________
-		devUi.showMassage("args[7]: " + args[7]);
+		//devUi.showMassage("args[7]: " + args[7]);
 		if (args[7].length() != 0) {
 			filtered.filterByDateRange(FIRST_DAY_IN_BOARD,MyDate.ParseFromString(args[7]));
 			// TODO add ending time of flight

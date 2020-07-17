@@ -1,6 +1,6 @@
+import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import interfaces.consoleUI;
 public class Program {
 //	public static boolean isOK = false;
 
-	/* delete me if all works well(20-31)*/
+	/* delete me if all works well(20-31) */
 //// Global parameters // 
 //	public static String flightId;
 //	public static String depAirPort;
@@ -38,9 +38,10 @@ public class Program {
 	private static List<Flight> flightsOut = new ArrayList<>();
 	public static List<String> airPorts = new ArrayList<>();
 	// I/O VARIABLES //
-	public static Scanner scn; // system.in scanner 
+	public static Scanner scn; // system.in scanner
 	public static final String FILE_NAME = "Input.txt";
 	public static Massageable ui = new consoleUI();
+	public static File f = new File(FILE_NAME);
 
 	public static void main(String[] args) throws FileNotFoundException {
 		scn = new Scanner(System.in);
@@ -54,7 +55,7 @@ public class Program {
 		for (int i = 0; i < 15; i++) {
 			System.out.print("- ");
 		}
-		
+
 		ui.showMassage("\n1 - Auto-Add new Flight");
 		ui.showMassage("2 - Add new Flight");
 		ui.showMassage("3 - Sort flights by...");
@@ -72,6 +73,7 @@ public class Program {
 
 		System.out.print("\nYour Choice: ");
 	}
+
 	// Activate the Menu //
 	public static void activition() throws FileNotFoundException {
 		ui.showMassage("Welcome\nPlease Choose by entering number:");
@@ -79,12 +81,11 @@ public class Program {
 		try {
 			while (!isOK) {
 				printMainMenu();
-				String userChoice=scn.nextLine();
-				
-				
+				String userChoice = scn.nextLine();
+
 				switch (userChoice) {
 				case "1":
-					for(int i=0;i<100;i++) { // add 100
+					for (int i = 0; i < 100; i++) { // add 100
 						AutoAdd();
 					}
 					ui.showMassage("Flight has been added Successfully");
@@ -102,7 +103,7 @@ public class Program {
 					break;
 				case "4":
 					try {
-						saveToFile();
+						saveToFile(FILE_NAME);
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
@@ -111,7 +112,7 @@ public class Program {
 					break;
 				case "5":
 					try {
-						loadFromFile(allFlights,flightsIn,flightsOut);
+						loadFromFile(allFlights, flightsIn, flightsOut, FILE_NAME);
 					} catch (Exception e) {
 						System.err.println("Error! Something Went Wrong. Try Again!");
 						e.printStackTrace();
@@ -144,71 +145,108 @@ public class Program {
 			}
 		} catch (Exception e) {
 			ui.showMassage("Invalid Input...");
-		
+
 		}
 	}
 
-	private static void saveToFile() throws Exception {
-		try (RandomAccessFile raf = new RandomAccessFile(FILE_NAME, "rw")) {
-			raf.setLength(0);
+	private static void saveToFile(String file) throws Exception {
+		PrintWriter pw = new PrintWriter(file);
+		for (Flight f : allFlights) {
+			pw.print(f.getBrand() + "#"); // 1 //
+			pw.print(f.getDepAirPort() + "#"); // 2 // In
+			pw.print(f.getArriveAirPort() + "#"); // 3 // Out
+			pw.print(f.getDate().toString() + "#"); // 4
+			pw.print(f.getDepTime() + "#"); // 5
+			pw.print(f.getArrTime() + "#"); // 6
+			pw.print(f.getFlightId() + "#"); // 7
+			pw.print(f.getTerminalNum() + "#"); // 8
+			pw.print(f.getisIncomingFlight() + "#"); // 9
+			pw.println();
 
-			// All Flights //
-			for (Flight f : allFlights) {
-				// the Parameters //
-				raf.writeUTF(f.getBrand());
-				raf.writeUTF(f.getDepAirPort());
-				raf.writeUTF(f.getArriveAirPort());
-				raf.writeUTF(f.getDate().toString());
-				raf.writeUTF(f.getDepTime());
-				raf.writeUTF(f.getArrTime());
-				raf.writeUTF(f.getFlightId());
-				raf.writeUTF(f.getTerminalNum() + "");
-				raf.writeUTF(f.getisIncomingFlight() + "");
-			}
 		}
+		pw.close();
+//		try (RandomAccessFile raf = new RandomAccessFile(FILE_NAME, "rw")) {
+//			raf.setLength(0);
+
+		// All Flights //
+//			for () {
+//				// the Parameters //
+//				raf.writeUTF(f.getBrand());
+//				raf.writeUTF(f.getDepAirPort());
+//				raf.writeUTF(f.getArriveAirPort());
+//				raf.writeUTF(f.getDate().toString());
+//				raf.writeUTF(f.getDepTime());
+//				raf.writeUTF(f.getArrTime());
+//				raf.writeUTF(f.getFlightId());
+//				raf.writeUTF(f.getTerminalNum() + "");
+//				raf.writeUTF(f.getisIncomingFlight() + "");
+//			}
+//		}
 
 	}
 
 	// In - > Out //
-	protected static void loadFromFile(List<Flight> allFlights1,List<Flight> flightsIn1,
-			List<Flight> flightsOut1) throws FileNotFoundException { // General func, move to other class
-		MyDate date = null;
+	protected static void loadFromFile(List<Flight> allFlights1, List<Flight> flightsIn1, List<Flight> flightsOut1,
+			String fName) throws FileNotFoundException { // General func, move to other class
 		allFlights1.clear();
 		flightsIn1.clear();
 		flightsOut1.clear();
-		String brand1,depAirPort1,arriveAirPort1,depTime1,arrTime1,flightId1;
-		int terminalNum1;
 		boolean isIncomingFlight1;
-		try (RandomAccessFile raf = new RandomAccessFile(FILE_NAME, "r")) {
-			while (raf.getFilePointer() < raf.length()) {
-				brand1 = raf.readUTF();
-				depAirPort1 = raf.readUTF();
-				arriveAirPort1 = raf.readUTF();
-				String theDate = raf.readUTF(); // reading the date as a String //
-				String[] split = theDate.split("/");
-				date = new MyDate(Integer.parseInt(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2]));
-				depTime1 = raf.readUTF();
-				arrTime1 = raf.readUTF();
-				flightId1 = raf.readUTF();
-				terminalNum1 = Integer.parseInt(raf.readUTF());
-				isIncomingFlight1 = Boolean.parseBoolean(raf.readUTF());
-				if (isIncomingFlight1 == true)
-					allFlights1.add(new FlightIn(brand1, depAirPort1, date, depTime1, arrTime1, flightId1, terminalNum1, true ));
-				else
-					allFlights1
-							.add(new FlightOut(brand1, arriveAirPort1, date, depTime1, arrTime1, flightId1, terminalNum1, false));
-			}
-				spreadFlights(allFlights1,flightsIn1,flightsOut1);
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 
+		Scanner s = new Scanner(f);
+		
+		while (s.hasNextLine()) {
+			if (s.next().isEmpty())
+				continue;
+			String myFlight = s.nextLine();
+			String[] splitFlight = myFlight.split("#");
+			for (String ss : splitFlight) {
+				System.out.println(ss + " | ");
+			}
+			if (splitFlight[splitFlight.length - 1].compareTo("true") == 0)
+				isIncomingFlight1 = true;
+			else
+				isIncomingFlight1 = false;
+
+			if (isIncomingFlight1 == true)
+				allFlights1.add(new FlightIn(splitFlight[0], splitFlight[1], MyDate.ParseFromString(splitFlight[3]),
+						splitFlight[4], splitFlight[5], splitFlight[6], Integer.parseInt(splitFlight[7]), true));
+			else
+				allFlights1.add(new FlightOut(splitFlight[0], splitFlight[2], MyDate.ParseFromString(splitFlight[3]),
+						splitFlight[4], splitFlight[5], splitFlight[6], Integer.parseInt(splitFlight[7]), true));
+
+		}
+		s.close();
+//		try (RandomAccessFile raf = new RandomAccessFile(FILE_NAME, "r")) {
+//			while (raf.getFilePointer() < raf.length()) {
+//				brand1 = raf.readUTF();
+//				depAirPort1 = raf.readUTF();
+//				arriveAirPort1 = raf.readUTF();
+//				String theDate = raf.readUTF(); // reading the date as a String //
+//				String[] split = theDate.split("/");
+//				date = new MyDate(Integer.parseInt(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2]));
+//				depTime1 = raf.readUTF();
+//				arrTime1 = raf.readUTF();
+//				flightId1 = raf.readUTF();
+//				terminalNum1 = Integer.parseInt(raf.readUTF());
+//				isIncomingFlight1 = Boolean.parseBoolean(raf.readUTF());
+//				if (isIncomingFlight1 == true)
+//					allFlights1.add(
+//							new FlightIn(brand1, depAirPort1, date, depTime1, arrTime1, flightId1, terminalNum1, true));
+//				else
+//					allFlights1.add(new FlightOut(brand1, arriveAirPort1, date, depTime1, arrTime1, flightId1,
+//							terminalNum1, false));
+//			}
+//			spreadFlights(allFlights1, flightsIn1, flightsOut1);
+//
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+	}
 
 	private static void addFlight() {
 		ui.showMassage("1) Flight in\n2) Flight Out");
-		boolean isOK=false;
+		boolean isOK = false;
 		while (!isOK) {
 			String inout = scn.nextLine();
 			if (inout.compareTo("1") == 0 || inout.compareTo("2") == 0) {
@@ -270,7 +308,7 @@ public class Program {
 		ui.showMassage("num of flights in allFlights: " + allFlights.size());
 		if (!allFlights.isEmpty()) {
 			allFlights.sort(compareByDepDate);
-			spreadFlights(allFlights,flightsIn , flightsOut);
+			spreadFlights(allFlights, flightsIn, flightsOut);
 		}
 		ui.showMassage(allFlights.size() + " " + flightsIn.size() + " " + flightsOut.size());
 
@@ -291,13 +329,11 @@ public class Program {
 			}
 
 	}
-	
 
 	public static List<Flight> SearchByTerms(List<Flight> flightsArr) {
-	FilterFlights filtered = new FilterFlights(flightsArr,brands);
-	return filtered.filterByTerms();
+		FilterFlights filtered = new FilterFlights(flightsArr, brands);
+		return filtered.filterByTerms();
 	}
-
 
 	// HelpFull Methods //
 //	public static ArrayList<>
@@ -320,24 +356,22 @@ public class Program {
 		Collections.shuffle(airPorts);
 		int size = airPorts.size() - 1;
 		String randAirport = airPorts.get((int) (Math.random() * size));
-		String randBrand = brands.get((int)(Math.random()*brands.size()));
-		
+		String randBrand = brands.get((int) (Math.random() * brands.size()));
+
 		if (isIncomingFlight1 == 1)
-			allFlights.add(new FlightIn(randBrand,randAirport,
-					new MyDate(day, mons, 2020), hrsOut + ":" + minOut, hrsIn + ":" + minIn,
-					(100 + Math.random() * 5) + "", (int) (1 + Math.random() * 3), true));
+			allFlights.add(new FlightIn(randBrand, randAirport, new MyDate(day, mons, 2020), hrsOut + ":" + minOut,
+					hrsIn + ":" + minIn, (100 + Math.random() * 5) + "", (int) (1 + Math.random() * 3), true));
 		else
-			allFlights.add(new FlightOut(randBrand, randAirport,
-					new MyDate(day, mons, 2020), hrsOut + ":" + minOut, hrsIn + ":" + minIn,
-					(100 + Math.random() * 5) + "", (int) (1 + Math.random() * 3), false));
+			allFlights.add(new FlightOut(randBrand, randAirport, new MyDate(day, mons, 2020), hrsOut + ":" + minOut,
+					hrsIn + ":" + minIn, (100 + Math.random() * 5) + "", (int) (1 + Math.random() * 3), false));
 
 	}
 
 	// ask method for detail //
 	private static void addNewFlightManually(String n) {
-		allFlights.add(manuallyÌ§CreateFlight(n));
+		allFlights.add(manuallyÌCreateFlight(n));
 	}
-	
+
 	public static MyDate getDateFromUser(Scanner scn) {
 		ui.showMassage("enter date 'day' 'month' 'year' (example :23 06 1994)");
 		int day = scn.nextInt();
@@ -347,8 +381,7 @@ public class Program {
 		return new MyDate(day, month, year);
 	}
 
-
-	public static Flight manuallyÌ§CreateFlight(String n) { // manual insertion of flight
+	public static Flight manuallyÌCreateFlight(String n) { // manual insertion of flight
 		String flightId;
 		String depAirPort;
 		String arriveAirPort;
@@ -362,9 +395,9 @@ public class Program {
 //		flightId = scn.nextLine();
 		ui.showMassage("Insert flight Date: ");
 		getDateFromUser(scn);
-		depTime =ui.getString("Insert flight Departure Time: ");
-		arrTime =ui.getString("Insert flight Arrival Time: ");
-		brand =ui.getString("Insert flight brand: ");
+		depTime = ui.getString("Insert flight Departure Time: ");
+		arrTime = ui.getString("Insert flight Arrival Time: ");
+		brand = ui.getString("Insert flight brand: ");
 		terminalNum = Integer.parseInt(ui.getString("Insert Terminal number: "));
 
 		if (n.equals("1")) { // -->> Flight In ///
@@ -388,13 +421,12 @@ public class Program {
 		brands.add("Wizz");
 		brands.add("American Airlines");
 		brands.add("Turkish Airlines");
-		
+
 	}
 
 	// Spreads Flights from AllFlights to FlightIn and FlightOut //
 
-	public static void spreadFlights(List<Flight> allFlights2,List<Flight> flightsIn2,
-			List<Flight> flightsOut2) {
+	public static void spreadFlights(List<Flight> allFlights2, List<Flight> flightsIn2, List<Flight> flightsOut2) {
 		for (Flight f : allFlights2) {
 			if (f.getisIncomingFlight() == true)
 				flightsIn2.add((FlightIn) f);
@@ -415,14 +447,13 @@ public class Program {
 				ui.showMassage(f.toString());
 		}
 	}
-	
+
 	public static void simpleMiniShowFlights(List<Flight> l) {
 		ui.showMassage("Flights:");
 		for (Flight f : l) {
-				ui.showMassage(f.toStringServer());
+			ui.showMassage(f.toStringServer());
 		}
 	}
-	
 
 	public static String addBrand() {
 		String brand = "";
