@@ -1,6 +1,12 @@
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,14 +24,13 @@ import interfaces.consoleUI;
  */
 
 public class Program {
-//	public static boolean isOK = false;
 
 	/* delete me if all works well(20-31) */
 //// Global parameters // 
 //	public static String flightId;
 //	public static String depAirPort;
 //	public static String arriveAirPort;
-//	public static String depTime;
+//	public static Stri	ng depTime;
 //	public static String arrTime;
 //	public static String brand;
 //	public static int terminalNum;
@@ -39,7 +44,7 @@ public class Program {
 	public static List<String> airPorts = new ArrayList<>();
 	// I/O VARIABLES //
 	public static Scanner scn; // system.in scanner
-	public static final String FILE_NAME = "Input.txt";
+	public static final String FILE_NAME = "AvnerATShahar.txt";
 	public static Massageable ui = new consoleUI();
 	public static File f = new File(FILE_NAME);
 
@@ -78,170 +83,93 @@ public class Program {
 	public static void activition() throws FileNotFoundException {
 		ui.showMassage("Welcome\nPlease Choose by entering number:");
 		boolean isOK = false;
-		try {
-			while (!isOK) {
-				printMainMenu();
-				String userChoice = scn.nextLine();
+		while (!isOK) {
+			printMainMenu();
+			String userChoice = scn.nextLine();
 
-				switch (userChoice) {
-				case "1":
-					for (int i = 0; i < 100; i++) { // add 100
-						AutoAdd();
-					}
-					ui.showMassage("Flight has been added Successfully");
-					isOK = false;
-					break;
-
-				case "2":
-					addFlight();
-					ui.showMassage("Flight has been added Successfully");
-					isOK = false;
-					break;
-				case "3":
-					sortFlights();
-					isOK = false;
-					break;
-				case "4":
-					try {
-						saveToFile(FILE_NAME);
-					} catch (Exception e1) {
-						e1.printStackTrace();
-					}
-					ui.showMassage("Flight has been Saved Successfully");
-					isOK = false;
-					break;
-				case "5":
-					try {
-						loadFromFile(allFlights, flightsIn, flightsOut, FILE_NAME);
-					} catch (Exception e) {
-						System.err.println("Error! Something Went Wrong. Try Again!");
-						e.printStackTrace();
-						break;
-					}
-					ui.showMassage("Flight has been Loaded Successfully");
-					isOK = false;
-					break;
-				case "6":
-					showFlights();
-					isOK = false;
-					break;
-				case "8":
-					SearchByTerms(allFlights);// keep in cases needed in future
-					isOK = false;
-					break;
-				case "9":
-					Collections.shuffle(allFlights);
-					isOK = false;
-					break;
-				case "10":
-					ui.showMassage("goodBye");
-					isOK = true;
-					break;
-
-				default:
-					ui.showMassage("Wrong input try again");
-					isOK = false;
+			switch (userChoice) {
+			case "1":
+				for (int i = 0; i < 100; i++) { // add 100
+					AutoAdd();
 				}
-			}
-		} catch (Exception e) {
-			ui.showMassage("Invalid Input...");
+				ui.showMassage("Flight has been added Successfully");
+				isOK = false;
+				break;
 
+			case "2":
+				addFlight();
+				ui.showMassage("Flight has been added Successfully");
+				isOK = false;
+				break;
+			case "3":
+				sortFlights();
+				isOK = false;
+				break;
+			case "4":
+				try {
+					saveToFile(allFlights);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+				ui.showMassage("Flight has been Saved Successfully");
+				isOK = false;
+				break;
+			case "5":
+				try {
+					allFlights.clear();
+					allFlights = loadFromFile(FILE_NAME);
+				} catch (Exception e) {
+					System.err.println("Error! Something Went Wrong. Try Again!");
+					e.printStackTrace();
+					break;
+				}
+				ui.showMassage("Flight has been Loaded Successfully");
+				isOK = false;
+				break;
+			case "6":
+				showFlights();
+				isOK = false;
+				break;
+			case "8":
+				SearchByTerms(allFlights);// keep in cases needed in future
+				isOK = false;
+				break;
+			case "9":
+				Collections.shuffle(allFlights);
+				isOK = false;
+				break;
+			case "10":
+				ui.showMassage("goodBye");
+				isOK = true;
+				break;
+
+			default:
+				ui.showMassage("Wrong input try again");
+				isOK = false;
+			}
 		}
 	}
 
-	private static void saveToFile(String file) throws Exception {
-		PrintWriter pw = new PrintWriter(file);
-		for (Flight f : allFlights) {
-			pw.print(f.getBrand() + "#"); // 1 //
-			pw.print(f.getDepAirPort() + "#"); // 2 // In
-			pw.print(f.getArriveAirPort() + "#"); // 3 // Out
-			pw.print(f.getDate().toString() + "#"); // 4
-			pw.print(f.getDepTime() + "#"); // 5
-			pw.print(f.getArrTime() + "#"); // 6
-			pw.print(f.getFlightId() + "#"); // 7
-			pw.print(f.getTerminalNum() + "#"); // 8
-			pw.print(f.getisIncomingFlight() + "#"); // 9
-			pw.println();
-
+	private static void saveToFile(List<Flight> allFlights)
+			throws FileNotFoundException, IOException, ClassNotFoundException {
+		try (ObjectOutputStream oos = new ObjectOutputStream(
+				new BufferedOutputStream(new FileOutputStream(FILE_NAME)))) {
+			for (Flight f : allFlights)
+				oos.writeObject(f);
 		}
-		pw.close();
-//		try (RandomAccessFile raf = new RandomAccessFile(FILE_NAME, "rw")) {
-//			raf.setLength(0);
-
-		// All Flights //
-//			for () {
-//				// the Parameters //
-//				raf.writeUTF(f.getBrand());
-//				raf.writeUTF(f.getDepAirPort());
-//				raf.writeUTF(f.getArriveAirPort());
-//				raf.writeUTF(f.getDate().toString());
-//				raf.writeUTF(f.getDepTime());
-//				raf.writeUTF(f.getArrTime());
-//				raf.writeUTF(f.getFlightId());
-//				raf.writeUTF(f.getTerminalNum() + "");
-//				raf.writeUTF(f.getisIncomingFlight() + "");
-//			}
-//		}
 
 	}
 
-	// In - > Out //
-	protected static void loadFromFile(List<Flight> allFlights1, List<Flight> flightsIn1, List<Flight> flightsOut1,
-			String fName) throws FileNotFoundException { // General func, move to other class
-		allFlights1.clear();
-		flightsIn1.clear();
-		flightsOut1.clear();
-		boolean isIncomingFlight1;
-
-		Scanner s = new Scanner(f);
-		
-		while (s.hasNextLine()) {
-			if (s.next().isEmpty())
-				continue;
-			String myFlight = s.nextLine();
-			String[] splitFlight = myFlight.split("#");
-			for (String ss : splitFlight) {
-				System.out.println(ss + " | ");
+	public static List<Flight> loadFromFile(String fName) throws IOException, ClassNotFoundException { // // class
+		List<Flight> myFlight = new ArrayList<>();
+		FileInputStream fis = new FileInputStream(fName);
+		BufferedInputStream bis;
+		try (ObjectInputStream ois = new ObjectInputStream(bis = new BufferedInputStream(fis))) {
+			while (bis.available() > 0) {
+				myFlight.add((Flight) ois.readObject());
 			}
-			if (splitFlight[splitFlight.length - 1].compareTo("true") == 0)
-				isIncomingFlight1 = true;
-			else
-				isIncomingFlight1 = false;
-
-			if (isIncomingFlight1 == true)
-				allFlights1.add(new FlightIn(splitFlight[0], splitFlight[1], MyDate.ParseFromString(splitFlight[3]),
-						splitFlight[4], splitFlight[5], splitFlight[6], Integer.parseInt(splitFlight[7]), true));
-			else
-				allFlights1.add(new FlightOut(splitFlight[0], splitFlight[2], MyDate.ParseFromString(splitFlight[3]),
-						splitFlight[4], splitFlight[5], splitFlight[6], Integer.parseInt(splitFlight[7]), true));
-
+			return myFlight;
 		}
-		s.close();
-//		try (RandomAccessFile raf = new RandomAccessFile(FILE_NAME, "r")) {
-//			while (raf.getFilePointer() < raf.length()) {
-//				brand1 = raf.readUTF();
-//				depAirPort1 = raf.readUTF();
-//				arriveAirPort1 = raf.readUTF();
-//				String theDate = raf.readUTF(); // reading the date as a String //
-//				String[] split = theDate.split("/");
-//				date = new MyDate(Integer.parseInt(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2]));
-//				depTime1 = raf.readUTF();
-//				arrTime1 = raf.readUTF();
-//				flightId1 = raf.readUTF();
-//				terminalNum1 = Integer.parseInt(raf.readUTF());
-//				isIncomingFlight1 = Boolean.parseBoolean(raf.readUTF());
-//				if (isIncomingFlight1 == true)
-//					allFlights1.add(
-//							new FlightIn(brand1, depAirPort1, date, depTime1, arrTime1, flightId1, terminalNum1, true));
-//				else
-//					allFlights1.add(new FlightOut(brand1, arriveAirPort1, date, depTime1, arrTime1, flightId1,
-//							terminalNum1, false));
-//			}
-//			spreadFlights(allFlights1, flightsIn1, flightsOut1);
-//
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
 	}
 
 	private static void addFlight() {
@@ -327,7 +255,6 @@ public class Program {
 			for (Flight f : flightsOut) {
 				ui.showMassage(f.toString());
 			}
-
 	}
 
 	public static List<Flight> SearchByTerms(List<Flight> flightsArr) {
@@ -532,7 +459,6 @@ public class Program {
 			if (res != 0)
 				return res;
 			return o1.getDepTime().compareTo(o2.getDepTime());
-
 		}
 	};
 

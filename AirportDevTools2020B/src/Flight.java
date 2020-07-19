@@ -1,7 +1,12 @@
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 
-public class Flight implements Cloneable{
+public class Flight implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public static DecimalFormat df = new DecimalFormat("#.##");
 	public static int Id = 1000;
 
@@ -18,7 +23,8 @@ public class Flight implements Cloneable{
 	protected String city;
 
 	// -> new -> Incoming Flight Constructor //
-	public Flight(String brand, MyDate date, String depTime, String arrTime, String flightId, int terminal, boolean isIncomingFlight) {
+	public Flight(String brand, MyDate date, String depTime, String arrTime, String flightId, int terminal,
+			boolean isIncomingFlight) {
 		setBrand(brand);
 		setDate(date);
 		setDepTime(depTime);
@@ -69,15 +75,17 @@ public class Flight implements Cloneable{
 	public boolean getisIncomingFlight() {
 		return isIncomingFlight;
 	}
+
 	public String getCountry() {
 		return this.country;
 	}
+
 	public String getCity() {
 		return this.city;
 	}
 
 	public String getAirport() {
-		if(this.arriveAirPort.contains("Gurion"))
+		if (this.arriveAirPort.contains("Gurion"))
 			return this.depAirPort;
 		else
 			return this.arriveAirPort;
@@ -140,7 +148,9 @@ public class Flight implements Cloneable{
 	}
 
 	public String setAnyTime(String time) {
-		if (time.length() % 5 != 0) {
+		if (time == null || time.isEmpty())
+			time = "00:00";
+		if (time.length() % 5 != 0) { // 2:22 2:1 // 22:1
 			String[] split = time.split(":");
 			if (Integer.parseInt(split[0]) < 10 && Integer.parseInt(split[1]) < 10)
 				return "0" + split[0] + ":0" + split[1];
@@ -148,39 +158,38 @@ public class Flight implements Cloneable{
 				return "0" + split[0] + ":" + split[1];
 			else if (Integer.parseInt(split[0]) > 10 && Integer.parseInt(split[1]) < 10)
 				return split[0] + ":0" + split[1];
-		} else
-			return time;
-		return null;
+		}
+		return time;
+
 	}
 
 	public String getDayInWeek() {
 		LocalDate me = LocalDate.of(date.getYear(), date.getMonth(), date.getDay());
 		return me.getDayOfWeek().toString();
 	}
-	
+
 	public void setCity(String city1) {
-		this.city=city1;
+		this.city = city1;
 	}
-	public void setCountry(String country1)
-	{
-		this.country=country1;
+
+	public void setCountry(String country1) {
+		this.country = country1;
 	}
-	
-	
+
 	public static String[] splitAirport(String airportStr) {
 		String[] countrY1 = airportStr.split(",");
-		String city = countrY1[0].substring(0,countrY1[0].length()-8); // -8 for deleting "Air-Port" 
+		String city = countrY1[0].substring(0, countrY1[0].length() - 8); // -8 for deleting "Air-Port"
 
-		String[] returnMe= {city,countrY1[1]};
-		
-				
+		String[] returnMe = { city, countrY1[1] };
+
 		return returnMe;
 	}
 
 	public String toStringServer() {
-		return("airline=" + this.brand + " country=" +this.getCountry()+ " city=" +this.getCity()+ " airport=" +this.getAirport() +
-		" " + this.getDayInWeek().toString() +  " date=" +this.getDate().toString()+ " between: " + this.getDepTime() +  " -> " +this.getArrTime()) ;
-		
+		return ("airline=" + this.brand + " country=" + this.getCountry() + " city=" + this.getCity() + " airport="
+				+ this.getAirport() + " " + this.getDayInWeek().toString() + " date=" + this.getDate().toString()
+				+ " between: " + this.getDepTime() + " -> " + this.getArrTime());
+
 //		# 									  request.args.get('outformat'), "arrivals",
 //		#                                     request.args.get('airline'), request.args.get('country'),
 //		#                                     request.args.get('city'), request.args.get('airport'),

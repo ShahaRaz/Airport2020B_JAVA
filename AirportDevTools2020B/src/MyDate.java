@@ -1,4 +1,5 @@
 
+import java.io.Serializable;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Period;
@@ -8,29 +9,31 @@ import java.util.Scanner;
 import interfaces.Massageable;
 import interfaces.consoleUI;
 
+public class MyDate implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-public class MyDate {
 	public static enum monthName {
 		Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec
 	};
 
 	final static int CURRENT_YEAR = 2020;
 	// MyDate date=new MyDate(19, 6, 2015);
-	
+
 	private int day;
 	private int month;
 	private int year;
 	private final static int[] DAYS_MONTHS = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 	public static Massageable ui = new consoleUI();
 
-
-	
 	public long getDayInWeekSundayInIndex0() {
 		LocalDate sunDay = LocalDate.of(this.year, this.month, this.day).with(DayOfWeek.SUNDAY);
 		sunDay = sunDay.minusDays(7);
 		LocalDate mine = LocalDate.of(year, month, day);
-		long almostDone = 	ChronoUnit.DAYS.between(sunDay, mine);
-		if(almostDone==7)
+		long almostDone = ChronoUnit.DAYS.between(sunDay, mine);
+		if (almostDone == 7)
 			return 0;
 		return almostDone;
 //		long sundayBased = mondayBased+1;
@@ -63,7 +66,6 @@ public class MyDate {
 		System.out.println("Insert year (4 Digits) :");
 		setYear(makeDate(scn));
 	}
-
 
 	private void setYear(int year) {
 		if (year < CURRENT_YEAR) {
@@ -164,15 +166,16 @@ public class MyDate {
 			return true;
 		return false;
 	}
-	
+
 	public static MyDate ParseFromString(String date) {
-		//format: DD/MM/YYYY
+		// format: DD/MM/YYYY
 		String[] splitToFields = date.split("/");
 		int day = Integer.parseInt(splitToFields[0]);
 		int month = Integer.parseInt(splitToFields[1]);
 		int year = Integer.parseInt(splitToFields[2]);
 		return new MyDate(day, month, year);
 	}
+
 	public static MyDate getDateFromUser(Scanner scn) {
 		ui.showMassage("enter date 'day' 'month' 'year' (example :23 06 1994)");
 		int day = scn.nextInt();
@@ -182,5 +185,3 @@ public class MyDate {
 		return new MyDate(day, month, year);
 	}
 }
-
-

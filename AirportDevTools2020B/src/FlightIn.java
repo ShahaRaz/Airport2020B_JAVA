@@ -1,5 +1,10 @@
+import java.io.Serializable;
 
-public class FlightIn extends Flight implements Cloneable {
+public class FlightIn extends Flight implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String depCity;
 
 	public FlightIn(String brand, String depAirPort, MyDate date, String depTime, String arrTime, String flightId,
