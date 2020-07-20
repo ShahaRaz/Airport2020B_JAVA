@@ -2,7 +2,7 @@ package interfaces;
 
 import java.util.Scanner;
 
-public class consoleUI implements Massageable{
+public class ConsoleUI implements Massageable{
 	private Scanner scn = new Scanner(System.in); // open & close scn??? 
 	@Override
 	public void showMassage(String msg) {

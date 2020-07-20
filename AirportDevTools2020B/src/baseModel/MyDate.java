@@ -1,3 +1,4 @@
+package baseModel;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -6,7 +7,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Scanner;
 
 import interfaces.Massageable;
-import interfaces.consoleUI;
+import interfaces.ConsoleUI;
 
 
 public class MyDate {
@@ -21,7 +22,7 @@ public class MyDate {
 	private int month;
 	private int year;
 	private final static int[] DAYS_MONTHS = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-	public static Massageable ui = new consoleUI();
+	public static Massageable ui = new ConsoleUI();
 
 
 	

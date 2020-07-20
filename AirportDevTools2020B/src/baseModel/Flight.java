@@ -1,3 +1,4 @@
+package baseModel;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 
@@ -140,7 +141,9 @@ public class Flight implements Cloneable{
 	}
 
 	public String setAnyTime(String time) {
-		if (time.length() % 5 != 0) {
+		if (time == null || time.isEmpty())
+			time = "00:00";
+		if (time.length() % 5 != 0) { // 2:22 2:1 // 22:1
 			String[] split = time.split(":");
 			if (Integer.parseInt(split[0]) < 10 && Integer.parseInt(split[1]) < 10)
 				return "0" + split[0] + ":0" + split[1];
@@ -148,9 +151,9 @@ public class Flight implements Cloneable{
 				return "0" + split[0] + ":" + split[1];
 			else if (Integer.parseInt(split[0]) > 10 && Integer.parseInt(split[1]) < 10)
 				return split[0] + ":0" + split[1];
-		} else
-			return time;
-		return null;
+		}
+		return time;
+
 	}
 
 	public String getDayInWeek() {

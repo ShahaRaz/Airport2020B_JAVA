@@ -1,3 +1,4 @@
+package baseModel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -5,13 +6,13 @@ import java.util.List;
 import java.util.Scanner;
 
 import interfaces.Massageable;
-import interfaces.consoleUI;
+import interfaces.ConsoleUI;
 
 public class FilterFlights {
 	// Current filter results
 	private List<Flight> originalFlights;
 	private List<Flight> filteredArr;
-	public static Massageable ui = new consoleUI();
+	public static Massageable ui = new ConsoleUI();
 	// Data structure for day filtering - 1= Sunday , 2= Monday ... 7=Saturday
 	public boolean[] weekDays = { false, false, false, false, false, false, false };
 	// AirLine (Brands) possibilities
@@ -93,10 +94,10 @@ public class FilterFlights {
 					ui.showMassage("Wrong input, please choose again");
 				}
 
-				Collections.sort(this.filteredArr, Program.compareByDepDate); // TODO move this to program.
+				Collections.sort(this.filteredArr, Program.compareByDepDate); 
 				Program.miniShowFlights(this.filteredArr);
 				String anotherConstraint = "NOPE";
-				anotherConstraint = ui.getString("would you like to add another day? Yes / No");
+				anotherConstraint = ui.getString("would you like to add another constraint? Yes / No");
 				if(anotherConstraint.length()>0)
 					if ((anotherConstraint.charAt(0) != 'y' && anotherConstraint.charAt(0) != 'Y')) {
 						stopAddFilters = true;

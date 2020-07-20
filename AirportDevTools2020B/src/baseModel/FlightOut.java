@@ -1,3 +1,4 @@
+package baseModel;
 
 public class FlightOut extends Flight implements Cloneable {
 

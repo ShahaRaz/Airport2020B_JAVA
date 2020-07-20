@@ -1,9 +1,14 @@
+package boardActivition;
 import java.util.ArrayList;
 import java.util.List;
 
+import baseModel.FilterFlights;
+import baseModel.Flight;
+import baseModel.MyDate;
+import baseModel.Program;
 import interfaces.Massageable;
 import interfaces.SilentUi;
-import interfaces.consoleUI;
+import interfaces.ConsoleUI;
 import interfaces.htmlUI;
 
 public class AirPortBoard {
@@ -13,7 +18,7 @@ public class AirPortBoard {
 	private List<Flight> allFlights = new ArrayList<>();
 	private List<Flight> flightsInBoard = new ArrayList<>();
 	private List<Flight> flightsOutBoard = new ArrayList<>();
-	public Massageable ui = new consoleUI();
+	public Massageable ui = new ConsoleUI();
 	private Massageable devUi = new SilentUi();
 	private FilterFlights filtered;
 	private  MyDate LAST_DAY_IN_BOARD = new MyDate(1, 1, 2100); 
@@ -41,6 +46,13 @@ public class AirPortBoard {
 	
 
 	void AirportActivition(String[] args) {
+		if (args.length == 0) {
+			devUi.showErrMassage("Expected values: ui kind + dep/arr + airline brand + country + airport + Take off date "
+					+ "landing date + weekDays[1sunday->7]");
+			ui.showErrMassage("no args, Exiting");
+			exit();
+		}
+		
 		devUi.showErrMassage("entered JAVA program!");
 		int i = 0;
 		for (String s : args) {
@@ -49,12 +61,9 @@ public class AirPortBoard {
 		}
 		devUi.showMassage(args.toString());
 		devUi.showErrMassage("java recived :" + args.length + " && arguments" + " Number of strings: " + i);
-		if (args.length == 0) {
-			devUi.showErrMassage("Expected values: ui kind + dep/arr + airline brand + country + airport + Take off date "
-					+ "landing date + weekDays[1sunday->7]");
-			ui.showErrMassage("no args, Exiting");
-			exit();
-		}
+		
+		
+		
 		if (args[0].contains("html")) {
 			ui = new htmlUI(); // overWrites the console ui
 			devUi.showErrMassage("html it is");
@@ -66,7 +75,7 @@ public class AirPortBoard {
 		}
 		
 		try {
-			Program.loadFromFile(this.allFlights, this.flightsInBoard, this.flightsOutBoard); // load all flights from file
+			Program.loadFromFile(this.allFlights, this.flightsInBoard, this.flightsOutBoard,FILE_NAME); // load all flights from file
 
 		} catch (Exception e) {
 			ui.showErrMassage("Error! can't load flights from data base. Try Again!");
@@ -76,7 +85,7 @@ public class AirPortBoard {
 
 		// 1 Departure / Arriviall__________________________________________________
 		if (args[1].contains("dep")) {
-			Program.simpleMiniShowFlights(flightsOutBoard);
+		//	Program.simpleMiniShowFlights(flightsOutBoard);
 			filtered = new FilterFlights(flightsOutBoard, null);
 		}
 		if (args[1].contains("arr")) {
@@ -159,7 +168,7 @@ public class AirPortBoard {
 		}
 
 		// printOut
-		ui.showErrMassage("Results are:");
+		//ui.showErrMassage("Results are:");
 		ui.showMassage(filtered.toStringServer(ui.dropLineChar()));
 
 	}

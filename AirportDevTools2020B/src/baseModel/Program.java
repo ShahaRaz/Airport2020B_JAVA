@@ -1,6 +1,9 @@
+package baseModel;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,8 +12,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
+
+
 import interfaces.Massageable;
-import interfaces.consoleUI;
+import interfaces.ConsoleUI;
 
 /**
  * @authors ${Avner Levy & Shahar Raz}
@@ -40,7 +45,9 @@ public class Program {
 	// I/O VARIABLES //
 	public static Scanner scn; // system.in scanner 
 	public static final String FILE_NAME = "Input.txt";
-	public static Massageable ui = new consoleUI();
+	public static Massageable ui = new ConsoleUI();
+	public static DecimalFormat flightIdDecFormat = new DecimalFormat("####");
+	
 
 	public static void main(String[] args) throws FileNotFoundException {
 		scn = new Scanner(System.in);
@@ -85,7 +92,7 @@ public class Program {
 				switch (userChoice) {
 				case "1":
 					for(int i=0;i<100;i++) { // add 100
-						AutoAdd();
+						autoAddFlight();
 					}
 					ui.showMassage("Flight has been added Successfully");
 					isOK = false;
@@ -111,7 +118,7 @@ public class Program {
 					break;
 				case "5":
 					try {
-						loadFromFile(allFlights,flightsIn,flightsOut);
+						loadFromFile(allFlights,flightsIn,flightsOut,FILE_NAME);
 					} catch (Exception e) {
 						System.err.println("Error! Something Went Wrong. Try Again!");
 						e.printStackTrace();
@@ -170,8 +177,8 @@ public class Program {
 	}
 
 	// In - > Out //
-	protected static void loadFromFile(List<Flight> allFlights1,List<Flight> flightsIn1,
-			List<Flight> flightsOut1) throws FileNotFoundException { // General func, move to other class
+	public static void loadFromFile(List<Flight> allFlights1,List<Flight> flightsIn1,
+			List<Flight> flightsOut1,String fileName) throws FileNotFoundException { // General func, move to other class
 		MyDate date = null;
 		allFlights1.clear();
 		flightsIn1.clear();
@@ -179,7 +186,7 @@ public class Program {
 		String brand1,depAirPort1,arriveAirPort1,depTime1,arrTime1,flightId1;
 		int terminalNum1;
 		boolean isIncomingFlight1;
-		try (RandomAccessFile raf = new RandomAccessFile(FILE_NAME, "r")) {
+		try (RandomAccessFile raf = new RandomAccessFile(fileName, "r")) {
 			while (raf.getFilePointer() < raf.length()) {
 				brand1 = raf.readUTF();
 				depAirPort1 = raf.readUTF();
@@ -303,7 +310,7 @@ public class Program {
 //	public static ArrayList<>
 
 	// Auto add //
-	private static void AutoAdd() {
+	private static void autoAddFlight() {
 		int hrsIn = (int) (1 + Math.random() * 23);
 		int minIn = (int) (1 + Math.random() * 60);
 		int hrsOut = (int) (1 + Math.random() * 23);
@@ -329,10 +336,10 @@ public class Program {
 		else
 			allFlights.add(new FlightOut(randBrand, randAirport,
 					new MyDate(day, mons, 2020), hrsOut + ":" + minOut, hrsIn + ":" + minIn,
-					(100 + Math.random() * 5) + "", (int) (1 + Math.random() * 3), false));
+					flightIdDecFormat.format((100 + Math.random() * 5)) + "", (int) (1 + Math.random() * 3), false));
 
 	}
-
+	
 	// ask method for detail //
 	private static void addNewFlightManually(String n) {
 		allFlights.add(manually̧CreateFlight(n));
@@ -524,5 +531,30 @@ public class Program {
 
 		}
 	};
+	
+	
 
 }
+/////////////////////////////////// SAVING OBJECTS WITH SERIELIZABLE ///////////////////////
+////// ____________________________ Save with Serielizable
+//private static void saveToFile(List<Flight> allFlights)
+//		throws FileNotFoundException, IOException, ClassNotFoundException {
+//	try (ObjectOutputStream oos = new ObjectOutputStream(
+//			new BufferedOutputStream(new FileOutputStream(FILE_NAME)))) {
+//		for (Flight f : allFlights)
+//			oos.writeObject(f);
+//	}
+//
+//}
+//////____________________________ load with Serielizable
+//public static List<Flight> loadFromFile(String fName) throws IOException, ClassNotFoundException { // // class
+//	List<Flight> myFlight = new ArrayList<>();
+//	FileInputStream fis = new FileInputStream(fName);
+//	BufferedInputStream bis;
+//	try (ObjectInputStream ois = new ObjectInputStream(bis = new BufferedInputStream(fis))) {
+//		while (bis.available() > 0) {
+//			myFlight.add((Flight) ois.readObject());
+//		}
+//		return myFlight;
+//	}
+//}

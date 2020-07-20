@@ -1,3 +1,4 @@
+package testsJunit;
 
 class testingTests {
 

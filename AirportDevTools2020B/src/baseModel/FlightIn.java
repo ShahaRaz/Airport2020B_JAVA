@@ -1,3 +1,4 @@
+package baseModel;
 
 public class FlightIn extends Flight implements Cloneable {
 	private String depCity;
@@ -21,7 +22,7 @@ public class FlightIn extends Flight implements Cloneable {
 	}
 
 	public String getDepCity() {
-		return depCity;
+		return depCity; // Splitter 
 	}
 
 
