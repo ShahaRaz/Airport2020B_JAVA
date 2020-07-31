@@ -1,5 +1,13 @@
 #!/usr/bin/python
+
+
+
+
 import subprocess
+
+
+
+
 
 from flask import Flask, request
 
@@ -9,13 +17,20 @@ terminalCompile = '-d build -cp ./jars/*.jar *.java'
 terminalRun = 'java -cp ./build:./jars/AirportDev14July.jar AirportActivition'
 #proc = subprocess.Popen(terminalCompile,terminalRun,shell=True,cwd = setDir)
 
+#_______________________________________________________________DO THAT! TODO ______________
+#AFTER COMPILING IS DONE! : RUN LIKE THIS !! 27July2020
+# java -classpath /Users/SRazStudent/git/Airport2020B_JAVA/AirportDevTools2020B/bin/ boardActivition/AirportActivation
+# "console"  "departuers"   ""  "Spain USA India"  ""  ""  "23/04/2020"  "28/11/2020"  "67"
+#________________________________________________________________DO THAT! TODO ______________
+
+
 proc = subprocess.Popen(terminalCompile,shell=True,cwd=setDir)
 #proc = subprocess.Popen(terminalRun,shell=True,cwd=setDir)
 
 #
 # proc = subprocess.run('cd..')
 # proc = subprocess.run('ls'
-#proc = subprocess.Popen("ls" , cwd = setDir)
+proc = subprocess.Popen("ls" , cwd = setDir)
 # proc = subprocess.run('ls')
 # proc = subprocess.Popen(terminalCompile,shell=True)
 # proc = subprocess.Popen(terminalRun,shell=True)
@@ -40,17 +55,25 @@ proc = subprocess.Popen(terminalCompile,shell=True,cwd=setDir)
 # 	// 7 - ending date
 # 	// 8 - week days [ 1= Sunday , 2=Monday... 7=Saturday]
 
+
 @app.route("/check")
-def printcheck():
-    print("hello") # not working
+def printCheck():
+    # print("hello") # not working
     return 'hello'
 
 
-# localhost:8000/departures?outFormat=html&airline=El-Al&country=USA&city=New-York&airport=NYC air-port
+@app.route("/check2")
+def printCheck2():
+  #  print("hello") # not working
+    return '1'+'2'
+
+
+# localhost:8000/departures?outFormat=html&airline=El-Al&country=USA
 @app.route("/departures")
 def dep():
-    return subprocess.check_output(['java', '-cp ./build:./jars/AirportDev14July.jar AirPortBoard', "-classpath",
-                                    "/Users/SRazStudent/git/Airport2020B_JAVA/AirportDevTools2020B/src/bin", "AirportActivition",
+    return subprocess.check_output(["java",  "-classpath",
+                                    "/Users/SRazStudent/git/Airport2020B_JAVA/AirportDevTools2020B/bin/ boardActivition",
+                                    "AirportActivation",
                                     request.args.get('outFormat'), "departures", # args[0] + args[1]
                                     request.args.get('airline'), request.args.get('country'),# args[2] + args[3]
                                     request.args.get('city'), request.args.get('airport')])# args[4] + args[5]
@@ -79,7 +102,10 @@ def arr():
                                     request.args.get('thursday'), request.args.get('friday'),
                                     request.args.get('saturday')])
 
+
 app.run(port=8000, host="0.0.0.0")
+
+
 
 #Stages to run this code in the terminal:
 
@@ -141,3 +167,12 @@ app.run(port=8000, host="0.0.0.0")
 #                                     request.args.get('saturday')])
 #
 # app.run(port=8000, host="0.0.0.0")
+
+#java -cp ./build:./jars/AirportDev20July.jar boardActivition/AirportActivition
+# "console"  "departuers"   ""  "Spain USA India"  ""  ""  "23/04/2020"  "28/11/2020"  "67"
+
+#cd
+#java -classpath . boardActivition/AirportActivation "console"  "departuers"   ""  "Spain USA India"  ""  ""  "23/04/2020"  "28/11/2020"  "67"
+
+# java -classpath /Users/SRazStudent/git/Airport2020B_JAVA/AirportDevTools2020B/bin/ boardActivition/AirportActivation
+# "console"  "departuers"   ""  "Spain USA India"  ""  ""  "23/04/2020"  "28/11/2020"  "67"

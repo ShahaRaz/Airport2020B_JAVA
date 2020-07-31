@@ -511,7 +511,7 @@ public class Program {
 
 		}
 	};
-
+	
 	public static Comparator<Flight> compareByArrivalDate = new Comparator<Flight>() {
 		@Override
 		public int compare(Flight o1, Flight o2) {
@@ -535,6 +535,8 @@ public class Program {
 	
 
 }
+
+/* 
 /////////////////////////////////// SAVING OBJECTS WITH SERIELIZABLE ///////////////////////
 ////// ____________________________ Save with Serielizable
 //private static void saveToFile(List<Flight> allFlights)
@@ -558,3 +560,7 @@ public class Program {
 //		return myFlight;
 //	}
 //}
+
+*/
+
+

@@ -22,7 +22,7 @@ public class FlightIn extends Flight implements Cloneable {
 	}
 
 	public String getDepCity() {
-		return depCity; // Splitter 
+		return depCity;  
 	}
 
 

@@ -65,7 +65,7 @@ public class AirPortBoard {
 		
 		
 		if (args[0].contains("html")) {
-			ui = new htmlUI(); // overWrites the console ui
+			ui = new htmlUI(); // overWrites the console ui 
 			devUi.showErrMassage("html it is");
 		} else if (args[0].contains("console"))
 			devUi.showErrMassage("console it is");
@@ -102,7 +102,7 @@ public class AirPortBoard {
 		devUi.showMassage("filtered stage 2");
 		devUi.showErrMassage(filtered.toStringServer(ui.dropLineChar()));
 		
-		// 3 - country__________________________________________________
+		// 3 - country__________________________________________________ 
 		devUi.showMassage("args[3]: " + args[3]);
 		if (args[3].length() != 0) {
 //			String[] splitCountry = args[2].split(",");
