@@ -128,11 +128,7 @@ public class Flight implements Cloneable{
 		this.arrTime = setAnyTime(arrTime);
 	}
 
-//	@Override
-//	public String toString() {
-//		return "Brand: " + brand;
-//	}
-
+	
 	// Helpful Methods //
 	public static double timeStrToDouble(String time) {
 		String[] split = time.split(":");
@@ -181,19 +177,9 @@ public class Flight implements Cloneable{
 	}
 
 	public String toStringServer() {
-		return("airline=" + this.brand + " country=" +this.getCountry()+ " city=" +this.getCity()+ " airport=" +this.getAirport() +
-		" " + this.getDayInWeek().toString() +  " date=" +this.getDate().toString()+ " between: " + this.getDepTime() +  " -> " +this.getArrTime()) ;
+		return("Airline:" + this.brand + ", Country:" +this.getCountry()+ ", City:" +this.getCity()+ ", Airport:" +this.getAirport() +
+		", " + this.getDayInWeek().toString() +  ", Departure date=" +this.getDate().toString()+ ", Between: " + this.getDepTime() +  " -> " +this.getArrTime()) ;
 		
-//		# 									  request.args.get('outformat'), "arrivals",
-//		#                                     request.args.get('airline'), request.args.get('country'),
-//		#                                     request.args.get('city'), request.args.get('airport'),
-//		#                                     request.args.get('day1'), request.args.get('month1'),
-//		#                                     request.args.get('year1'), request.args.get('day2'),
-//		#                                     request.args.get('month2'), request.args.get('year2'),
-//		#                                     request.args.get('sunday'), request.args.get('monday'),
-//		#                                     request.args.get('tuesday'), request.args.get('wednesday'),
-//		#                                     request.args.get('thursday'), request.args.get('friday'),
-//		#                                     request.args.get('saturday')])
 	}
 
 }

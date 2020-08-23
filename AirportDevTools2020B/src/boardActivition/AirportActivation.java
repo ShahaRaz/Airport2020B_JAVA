@@ -1,19 +1,17 @@
-package boardActivition;
+      package boardActivition;
 
 public class AirportActivation {
 
 	public static void main(String[] args) {
 		// make AirPortBoard non-static class
-		System.out.println("reached java");
-
 		@SuppressWarnings("unused")
 		AirPortBoard exe = new AirPortBoard(args);
-		
+		//System.out.println("args[0] is : " + args[0]);
 	} 
 	
 }
  
-// Activation from Terminal: 
+// Activation from Terminal:     
 
 // Change Directory to :
 // cd /Users/SRazStudent/git/Airport2020B_JAVA/AirportDevTools2020B/src
@@ -22,3 +20,6 @@ public class AirportActivation {
 
 // 2) java -cp ./build:./jars/AirportDev20July.jar boardActivition/AirportActivation  ==>
 		// ==>  "console"  "arrivials"   ""  "Spain USA India"  ""  ""  "23/04/2020"  "28/11/2020"  "67"
+
+
+//"console"  "arrivials"   ""  "Spain USA India"  ""  ""  "23/04/2020"  "28/11/2020"  "67"

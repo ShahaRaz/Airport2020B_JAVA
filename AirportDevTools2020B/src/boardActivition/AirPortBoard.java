@@ -90,7 +90,7 @@ public class AirPortBoard {
 		}
 		if (args[1].contains("arr")) {
 		//	Program.simpleMiniShowFlights(flightsInBoard);
-			filtered = new FilterFlights(flightsOutBoard, null);
+			filtered = new FilterFlights(flightsInBoard, null);
 		}
 
 		
@@ -161,8 +161,8 @@ public class AirPortBoard {
 		devUi.showErrMassage(filtered.toStringServer(ui.dropLineChar()));
 
 		// 8 - week Days__________________________________________________
-		devUi.showMassage("args[8]: " + args[8]);
 		if (args[8].length() != 0) {
+			devUi.showMassage("args[8]: " + args[8]);
 			filtered.toggleIntDaysInWeekFromStr(args[8]);
 			filtered.filterByDateWeekDay();
 		}
@@ -181,142 +181,3 @@ public class AirPortBoard {
 
 }
 
-/// Program in python // (stage 3) 
-//def dep():
-//    return subprocess.check_output(["java", "-classpath",
-//                                    "/home/afeka/workspace/g1/bin", "NatbagMain",
-//                                    request.args.get('outformat'), "departures",
-//                                    request.args.get('airline'), request.args.get('country'),
-//                                    request.args.get('city'), request.args.get('airport'),
-//                                    request.args.get('day1'), request.args.get('month1'),
-//                                    request.args.get('year1'), request.args.get('day2'),
-//                                    request.args.get('month2'), request.args.get('year2'),
-//                                    request.args.get('sunday'), request.args.get('monday'),
-//                                    request.args.get('tuesday'), request.args.get('wednesday'),
-//                                    request.args.get('thursday'), request.args.get('friday'),
-//                                    request.args.get('saturday')])
-//@app.route("/arrivals")
-//def arr():
-//    return subprocess.check_output(["java", "-classpath",
-//                                    "Users/SRazStudent/git/Airport2020B_JAVA/AirportDevTools2020B/src/bin", "Program",
-//                                    request.args.get('outformat'), "arrivals",
-//                                    request.args.get('airline'), request.args.get('country'),
-//                                    request.args.get('city'), request.args.get('airport'),
-//                                    request.args.get('day1'), request.args.get('month1'),
-//                                    request.args.get('year1'), request.args.get('day2'),
-//                                    request.args.get('month2'), request.args.get('year2'),
-//                                    request.args.get('sunday'), request.args.get('monday'),
-//                                    request.args.get('tuesday'), request.args.get('wednesday'),
-//                                    request.args.get('thursday'), request.args.get('friday'),
-//                                    request.args.get('saturday')])
-
-//		
-//	} catch (Exception e) {
-//	}
-//	List<Flight> l = new ArrayList<>();
-//	String brand = "";
-//	String country = "";
-//	String city = "";
-//	String airport = "";
-//	MyDate startDate = null;
-//	MyDate endingDate = null;
-//	String weekDays = "";
-//	
-//	devUi.showMassage("Which Air-Line Brand? (1-" + (brands.size() + 1) + ")");
-//	int i = 0;
-//	devUi.showMassage(i + ") Any Flight Company...");
-//	
-//	for (String s : brands)
-//		devUi.showMassage(++i + ") " + s);
-//	devUi.showMassage(++i + ") Other brands");
-//	try {
-//		i = Integer.parseInt(scn.nextLine());
-//	} catch (Exception e) {
-//		devUi.showMassage("Invalid Input... Try again!");
-//		i = Integer.parseInt(scn.nextLine());
-//	}
-//	
-//	if (i == 5) {
-//		devUi.showMassage("Whitch Flight Company?");
-//		brand = scn.nextLine();
-//		
-//	} else if (i == 0)
-//		brand = "";
-//	else if (i < 5 && i > 0)
-//		brand = brands.get(i - 1);
-//	else
-//		devUi.showMassage("No Company Chosen...");
-//	devUi.showMassage("Which Country?");
-//	country = scn.nextLine();
-//	devUi.showMassage("Which City?");
-//	city = scn.nextLine();
-//	devUi.showMassage("Which Air-Port?");
-//	airport = scn.nextLine();
-//	devUi.showMassage("What is the Starting Date?");
-//	try {
-//		System.out.print("Insert a day: ");
-//		int days = Integer.parseInt(scn.nextLine());
-//		System.out.print("Insert Month: ");
-//		int mos = Integer.parseInt(scn.nextLine());
-//		System.out.print("Insert Year: ");
-//		int year = Integer.parseInt(scn.nextLine());
-//		startDate = new MyDate(days, mos, year);
-//	} catch (Exception e) {
-//		devUi.showMassage("Didnt Work Out");
-//		startDate = new MyDate(1, 1, 1990);
-//	}
-//	devUi.showMassage("What is the Ending Date?");
-//	try {
-//		System.out.print("Insert a day: ");
-//		int days = Integer.parseInt(scn.nextLine());
-//		System.out.print("Insert Month: ");
-//		int mos = Integer.parseInt(scn.nextLine());
-//		System.out.print("Insert Year: ");
-//		int year = Integer.parseInt(scn.nextLine());
-//		endingDate = new MyDate(days, mos, year);
-//	} catch (Exception e) {
-//		devUi.showMassage("Didnt Work Out");
-//		endingDate = new MyDate(30, 12, 2050);
-//	}
-//	// String => Sunday Friday Monday <= String//
-//	try {
-//		devUi.showMassage("Which Day in the Week you Prefer?");
-//		weekDays += scn.nextLine() + " ";
-//		
-//		while (true) {
-//			devUi.showMassage("Any other day?");
-//			devUi.showMassage("1) yes\n2) no");
-//			String res = scn.nextLine();
-//			if (res.compareTo("1") == 0) {
-//				devUi.showMassage("which day you prefer?");
-//				weekDays += scn.nextLine() + " ";
-//			} else if (res.compareTo("2") == 0) {
-//				devUi.showMassage("OK, Lets go forward...");
-//				break;
-//			} else {
-//				devUi.showMassage("Invalid input, Lets go forward...");
-//				break;
-//			}
-//		}
-//		devUi.showMassage("Error! Going 1 By-Defualt");
-//	}
-//	int counter = 0;
-//	for (Flight f : arr) {
-//		if ((weekDays.toUpperCase()).contains(f.getDayInWeek()) && (f.getBrand().contains(brand))
-//				&& f.getDate().before(endingDate) && f.getDate().after(startDate)
-//				&& (f.getDepAirPort().contains(country) || f.getArriveAirPort().contains(country))
-//				&& (f.getDepAirPort().contains(city) || f.getArriveAirPort().contains(city))
-//				&& (f.getDepAirPort().contains(airport) || f.getArriveAirPort().contains(airport))) {
-//			;
-//			counter++;
-//			l.add(f);
-//		}
-//	}
-//	if (counter == 0)
-//		devUi.showMassage("No Match Found");
-//	return l;
-//
-//	
-//	
-//	
-//}

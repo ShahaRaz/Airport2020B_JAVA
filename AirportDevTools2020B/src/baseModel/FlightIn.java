@@ -25,5 +25,9 @@ public class FlightIn extends Flight implements Cloneable {
 		return depCity;  
 	}
 
+	public String toStringServer() {
+		return("Airline: " + this.brand + ", Country: " +this.getCountry()+ ", City: " +this.getCity()+ ", Airport:" +this.getAirport() +
+		", " + this.getDayInWeek().toString() +  ", Departure date:" +this.getDate().toString()+ ", Arrives at: " +this.getArrTime()) ;
+	}
 
 }
