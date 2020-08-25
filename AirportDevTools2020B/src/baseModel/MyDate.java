@@ -168,11 +168,17 @@ public class MyDate {
 	
 	public static MyDate ParseFromString(String date) {
 		//format: DD/MM/YYYY
+		MyDate tempDate;
+		try {
 		String[] splitToFields = date.split("/");
 		int day = Integer.parseInt(splitToFields[0]);
 		int month = Integer.parseInt(splitToFields[1]);
 		int year = Integer.parseInt(splitToFields[2]);
-		return new MyDate(day, month, year);
+		tempDate = new MyDate(day, month, year);
+		}catch (Exception e){
+			tempDate = ParseFromHtmlString(date);
+		}
+		return tempDate;
 	}
 	public static MyDate ParseFromHtmlString(String date) {
 		//format: YYYY-MM-DD

@@ -263,9 +263,10 @@ public class FilterFlights {
 	
 	public String toHtmlTableServer(String uiDropLine) {
 		StringBuffer sb = new StringBuffer();
-		sb.append("<table class=\"AirportTable\">" +
+		sb.append("<table class=\"AirportTable\" style=\"margin-left: auto; margin-right:"
+				+ " auto;\" cellspacing=\"5\" cellpadding=\"5\">>" +
 				" <tbody>\n" + 
-				"    <tr>\n" + 
+				"    <tbody>\n" + 
 				"    <td><strong>Airline </strong></td>\n" + 
 				"    <td><strong>Country</strong></td>\n" + 
 				"    <td><strong>City</strong></td>\n" + 

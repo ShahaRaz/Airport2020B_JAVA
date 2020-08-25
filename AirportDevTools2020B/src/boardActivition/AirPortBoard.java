@@ -69,9 +69,10 @@ public class AirPortBoard {
 			isHtmlFormat=true;
 			devUi.showErrMassage("html it is");
 		} else if (args[0].contains("console")) {
-			isHtmlFormat=false;
 			devUi.showErrMassage("console it is");
+			isHtmlFormat=false;
 		}
+			
 		else {
 			devUi.showErrMassage("first arg must be ui type (html or console)");
 			exit();
@@ -141,11 +142,8 @@ public class AirPortBoard {
 		// 6 - Starting Date__________________________________________________
 		devUi.showMassage("args[6]: " + args[6]);
 		if (args[6].length() != 0) {
-			if(isHtmlFormat) 
-				filtered.filterByDateRange(MyDate.ParseFromHtmlString(args[6]), LAST_DAY_IN_BOARD);
-			else 
-				filtered.filterByDateRange(MyDate.ParseFromString(args[6]), LAST_DAY_IN_BOARD);	
-			}
+			filtered.filterByDateRange(MyDate.ParseFromString(args[6]), LAST_DAY_IN_BOARD);
+		}
 		devUi.showMassage("filtered stage 6");
 		devUi.showErrMassage(filtered.toStringServer(ui.dropLineChar()));
 		
@@ -153,10 +151,7 @@ public class AirPortBoard {
 		// 7 - Ending Date__________________________________________________
 		devUi.showMassage("args[7]: " + args[7]);
 		if (args[7].length() != 0) {
-			if(isHtmlFormat)
-				filtered.filterByDateRange(FIRST_DAY_IN_BOARD,MyDate.ParseFromHtmlString(args[7]));
-			else
-				filtered.filterByDateRange(FIRST_DAY_IN_BOARD,MyDate.ParseFromString(args[7]));
+			filtered.filterByDateRange(FIRST_DAY_IN_BOARD,MyDate.ParseFromString(args[7]));
 		}
 		
 		devUi.showErrMassage("filtered stage 7");
