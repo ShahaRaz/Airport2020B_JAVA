@@ -29,5 +29,9 @@ public class FlightIn extends Flight implements Cloneable {
 		return("Airline: " + this.brand + ", Country: " +this.getCountry()+ ", City: " +this.getCity()+ ", Airport:" +this.getAirport() +
 		", " + this.getDayInWeek().toString() +  ", Departure date:" +this.getDate().toString()+ ", Arrives at: " +this.getArrTime()) ;
 	}
+	public String toHtmlTableServer() {
+		return("<tr><td> " + this.brand + "</td><td>" +this.getCountry()+ "</td><td>" +this.getCity()+ "</td><td>" +this.getAirport() +
+		"</td><td>" + this.getDayInWeek().toString() +  "</td><td>" +this.getDate().toString()+ "</td><td>" +this.getArrTime()+ "</td></tr>") ;
+	}
 
 }

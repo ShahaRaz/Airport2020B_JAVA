@@ -174,6 +174,14 @@ public class MyDate {
 		int year = Integer.parseInt(splitToFields[2]);
 		return new MyDate(day, month, year);
 	}
+	public static MyDate ParseFromHtmlString(String date) {
+		//format: YYYY-MM-DD
+		String[] splitToFields = date.split("-");
+		int year = Integer.parseInt(splitToFields[0]);
+		int month = Integer.parseInt(splitToFields[1]);
+		int day = Integer.parseInt(splitToFields[2]);
+		return new MyDate(day, month, year);
+	}
 	public static MyDate getDateFromUser(Scanner scn) {
 		ui.showMassage("enter date 'day' 'month' 'year' (example :23 06 1994)");
 		int day = scn.nextInt();

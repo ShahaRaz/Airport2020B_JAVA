@@ -181,5 +181,9 @@ public class Flight implements Cloneable{
 		", " + this.getDayInWeek().toString() +  ", Departure date=" +this.getDate().toString()+ ", Between: " + this.getDepTime() +  " -> " +this.getArrTime()) ;
 		
 	}
+	public String toHtmlTableServer() {
+		return"override me in flight in & out";
+		
+	}
 
 }

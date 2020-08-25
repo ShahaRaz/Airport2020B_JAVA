@@ -26,5 +26,10 @@ public class FlightOut extends Flight implements Cloneable {
 		", " + this.getDayInWeek().toString() +  ", Departure date: " +this.getDate().toString()+ ", Leave by: " + this.getDepTime()) ;
 
 	}
+	public String toHtmlTableServer() {
+		return("<tr><td>" + this.brand + "</td><td>" +this.getCountry()+ "</td><td>" +this.getCity()+ "</td><td>" + this.getAirport() +
+		"</td><td>" + this.getDayInWeek().toString() +  "</td><td>" +this.getDate().toString()+ "</td><td>" + this.getDepTime()+"</td></tr>") ;
+
+	}
 
 }

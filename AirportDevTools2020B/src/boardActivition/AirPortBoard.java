@@ -21,9 +21,9 @@ public class AirPortBoard {
 	public Massageable ui = new ConsoleUI();
 	private Massageable devUi = new SilentUi();
 	private FilterFlights filtered;
-	private  MyDate LAST_DAY_IN_BOARD = new MyDate(1, 1, 2100); 
-	private  MyDate FIRST_DAY_IN_BOARD = new MyDate(1,1,2020);
-
+	private MyDate LAST_DAY_IN_BOARD = new MyDate(1, 1, 2100); 
+	private MyDate FIRST_DAY_IN_BOARD = new MyDate(1,1,2020);
+	private boolean isHtmlFormat;
 	// Args:
 	// 0 - User Interface kind
 	// 1 - departures or Arrivials
@@ -65,10 +65,13 @@ public class AirPortBoard {
 		
 		
 		if (args[0].contains("html")) {
-			ui = new htmlUI(); // overWrites the console ui 
+			ui = new htmlUI(); // overWrites the console ui
+			isHtmlFormat=true;
 			devUi.showErrMassage("html it is");
-		} else if (args[0].contains("console"))
+		} else if (args[0].contains("console")) {
+			isHtmlFormat=false;
 			devUi.showErrMassage("console it is");
+		}
 		else {
 			devUi.showErrMassage("first arg must be ui type (html or console)");
 			exit();
@@ -138,8 +141,11 @@ public class AirPortBoard {
 		// 6 - Starting Date__________________________________________________
 		devUi.showMassage("args[6]: " + args[6]);
 		if (args[6].length() != 0) {
-			filtered.filterByDateRange(MyDate.ParseFromString(args[6]), LAST_DAY_IN_BOARD);
-		}
+			if(isHtmlFormat) 
+				filtered.filterByDateRange(MyDate.ParseFromHtmlString(args[6]), LAST_DAY_IN_BOARD);
+			else 
+				filtered.filterByDateRange(MyDate.ParseFromString(args[6]), LAST_DAY_IN_BOARD);	
+			}
 		devUi.showMassage("filtered stage 6");
 		devUi.showErrMassage(filtered.toStringServer(ui.dropLineChar()));
 		
@@ -147,14 +153,10 @@ public class AirPortBoard {
 		// 7 - Ending Date__________________________________________________
 		devUi.showMassage("args[7]: " + args[7]);
 		if (args[7].length() != 0) {
-			filtered.filterByDateRange(FIRST_DAY_IN_BOARD,MyDate.ParseFromString(args[7]));
-			// TODO add ending time of flight
-			// with term like so:
-			// if(departure time+ flight time > 24)
-			// landing date = departureDate+1;
-			// remember to change days in weeks accordingly
-			///ORRR
-			// if(departure time < takeOff time) day++
+			if(isHtmlFormat)
+				filtered.filterByDateRange(FIRST_DAY_IN_BOARD,MyDate.ParseFromHtmlString(args[7]));
+			else
+				filtered.filterByDateRange(FIRST_DAY_IN_BOARD,MyDate.ParseFromString(args[7]));
 		}
 		
 		devUi.showErrMassage("filtered stage 7");
@@ -168,8 +170,13 @@ public class AirPortBoard {
 		}
 
 		// printOut
-		//ui.showErrMassage("Results are:");
-		ui.showMassage(filtered.toStringServer(ui.dropLineChar()));
+
+		/// Print Style: 
+		if (isHtmlFormat)
+			ui.showMassage(filtered.toHtmlTableServer(ui.dropLineChar()));
+		else
+			ui.showMassage(filtered.toStringServer(ui.dropLineChar()));
+		
 
 	}
 
@@ -177,6 +184,7 @@ public class AirPortBoard {
 	private void exit() {
 		ui.showMassage("Goodbye");
 	}
+	
 	
 
 }

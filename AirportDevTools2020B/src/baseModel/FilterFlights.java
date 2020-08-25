@@ -260,6 +260,31 @@ public class FilterFlights {
 		}
 		return sb.toString();
 	}
+	
+	public String toHtmlTableServer(String uiDropLine) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("<table class=\"AirportTable\">" +
+				" <tbody>\n" + 
+				"    <tr>\n" + 
+				"    <td><strong>Airline </strong></td>\n" + 
+				"    <td><strong>Country</strong></td>\n" + 
+				"    <td><strong>City</strong></td>\n" + 
+				"    <td><strong>Airport </strong></td>\n" + 
+				"    <td><strong>Day </strong></td>\n" + 
+				"    <td><strong>Date</strong></td>\n" + 
+				"    <td><strong>Hour</strong></td>\n" + 
+				"    </tr>");
+		for(Flight f:filteredArr) {
+			sb.append(f.toHtmlTableServer());
+			//sb.append(uiDropLine);
+		}
+		sb.append(	"   </tbody>" + 
+					"    </table>");
+		
+		return sb.toString();
+	}
+	
+	
 }
 
 
