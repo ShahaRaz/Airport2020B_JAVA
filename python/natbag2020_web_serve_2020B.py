@@ -60,7 +60,7 @@ def setHtmlPage(s,direction):
     htmlSplit1 = " <form action ="+direction
     htmlInput= """ " method="GET">
     <form action="departures " method="GET">
-    <div style="text-align: center;">Format: HTML <input checked="checked" name="outFormat" type="radio" value="html" /> console <input name="outFormat" type="radio" value="html" /></div>
+    <div style="text-align: center;">Format: HTML <input checked="checked" name="outFormat" type="radio" value="html" /> console <input name="outFormat" type="radio" value="console" /></div>
     <h3 style="text-align: center;"><strong><label for="airline"> Airline </label></strong><select name="airline">
     <option value="">No restrictions</option>
     <option value="Arkia">Arkia</option>
@@ -138,6 +138,8 @@ def dep():
                                  cwd=RUNNABLE_DIRECTORY))
 
     return setHtmlPage(javaResult,DEPARTURES)
+
+
 
 
 @app.route("/arrivals")

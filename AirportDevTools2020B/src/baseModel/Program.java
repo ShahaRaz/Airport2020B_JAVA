@@ -355,7 +355,7 @@ public class Program {
 	}
 
 
-	public static Flight manually̧CreateFlight(String n) { // manual insertion of flight
+	public static Flight manually̧CreateFlight(String inOrOut) { // manual insertion of flight
 		String flightId;
 		String depAirPort;
 		String arriveAirPort;
@@ -374,11 +374,11 @@ public class Program {
 		brand =ui.getString("Insert flight brand: ");
 		terminalNum = Integer.parseInt(ui.getString("Insert Terminal number: "));
 
-		if (n.equals("1")) { // -->> Flight In ///
+		if (inOrOut.equals("1")) { // -->> Flight In ///
 			System.out.print("Insert flight Departure Air-Port: ");
 			depAirPort = scn.nextLine();
 			return new FlightIn(brand, depAirPort, date, depTime, arrTime, flightId, terminalNum, true);
-		} else if (n.equals("2")) { // -->> flight out ///
+		} else if (inOrOut.equals("2")) { // -->> flight out ///
 
 			System.out.print("Insert flight Arrival AirPort: ");
 			arriveAirPort = scn.nextLine();
@@ -399,7 +399,6 @@ public class Program {
 	}
 
 	// Spreads Flights from AllFlights to FlightIn and FlightOut //
-
 	public static void spreadFlights(List<Flight> allFlights2,List<Flight> flightsIn2,
 			List<Flight> flightsOut2) {
 		for (Flight f : allFlights2) {
