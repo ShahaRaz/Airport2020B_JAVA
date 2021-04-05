@@ -12,6 +12,7 @@ airport's incoming/outgoing flights board. Model in JAVA, Server in Python w\ Fl
 
 ## **Screenshots & GIFS Examples:**
 
+### BackEnd Java
 AutoAdd Flights:
 
 ![](https://github.com/ShahaRaz/Airport_JAVA_2020B/blob/master/Previews/AirportBoard_Java_AutoAddFlights.png)
@@ -20,8 +21,8 @@ AutoAdd Flights:
 ![](https://github.com/ShahaRaz/Airport_JAVA_2020B/blob/master/Previews/Screen_Recording_2020_09_29_at_11_23_53.gif)
 
 
+## Server Python & Flask:
 
-Python & Flask:
 
 ![](https://github.com/ShahaRaz/Airport_JAVA_2020B/blob/master/Previews/AirportBoard_Python_setServer.png)
 
@@ -33,7 +34,7 @@ Python to Browser:
 
 
 
-
+## FrontEnd HTML5
 Browser Example 1:
 
 ![](https://github.com/ShahaRaz/Airport_JAVA_2020B/blob/master/Previews/Screen_Recording_2020_09_29_at_11_36_36-2.gif)
